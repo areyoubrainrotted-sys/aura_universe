@@ -1,1 +1,194 @@
+:root {
+    --bg-dark: #020205;
+    --aura-purple: #7d5fff;
+    --aura-cyan: #00d2ff;
+    --glass: rgba(255, 255, 255, 0.03);
+    --border: rgba(125, 95, 255, 0.2);
+}
 
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+    background-color: var(--bg-dark);
+    color: #f0f0f0;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* --- THE CINEMATIC BACKGROUND --- */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    /* Deep Space Nebula Gradient */
+    background: 
+        radial-gradient(circle at 50% 20%, #1a1a3a 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, #0c0c25 0%, #020205 100%);
+    z-index: -2;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+    opacity: 0.3;
+    z-index: -1;
+}
+
+/* --- LAYOUT CENTERING --- */
+header, section, main {
+    width: 100%;
+    max-width: 1200px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem;
+    position: relative;
+}
+
+/* Logo Aura Effect */
+.logo-wrapper {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.main-logo {
+    width: 15rem;
+    height: 15rem;
+    border-radius: 50%;
+    z-index: 2;
+    position: relative;
+    animation: float 6s ease-in-out infinite;
+    border: 1px solid var(--border);
+}
+
+.aura-glow {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 18rem; height: 18rem;
+    background: var(--aura-purple);
+    filter: blur(60px);
+    opacity: 0.4;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+.glitch-text {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    letter-spacing: 0.8rem;
+    background: linear-gradient(to bottom, #fff 40%, var(--aura-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Start Button (The Pill) */
+.start-btn {
+    margin-top: 2rem;
+    padding: 1.2rem 4rem;
+    background: rgba(125, 95, 255, 0.1);
+    border: 1px solid var(--aura-purple);
+    border-radius: 50px;
+    color: white;
+    text-decoration: none;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 0.3rem;
+    transition: 0.4s;
+    backdrop-filter: blur(10px);
+}
+
+.start-btn:hover {
+    background: var(--aura-purple);
+    box-shadow: 0 0 40px var(--aura-purple);
+    transform: scale(1.05);
+}
+
+/* Feature Grid */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.5rem;
+    width: 100%;
+}
+
+.feature-item {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    padding: 3rem;
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    transition: 0.4s;
+}
+
+.feature-item:hover {
+    transform: translateY(-10px);
+    border-color: var(--aura-cyan);
+    background: rgba(0, 210, 255, 0.05);
+}
+
+/* --- THE REVIEWS (THE FIX) --- */
+.review-scroll {
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin: 3rem 0;
+}
+
+.review-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    padding: 2.5rem; /* The missing padding */
+    border-radius: 1.5rem;
+    text-align: left;
+    border-left: 5px solid var(--aura-cyan);
+    animation: slideIn 0.5s ease-out forwards;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* Input Area (Modern Merged Pill) */
+.leave-review {
+    display: flex;
+    width: 100%;
+    max-width: 500px;
+    background: rgba(0,0,0,0.6);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    overflow: hidden;
+}
+
+.leave-review input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 1.2rem;
+    color: white;
+    outline: none;
+}
+
+.leave-review button {
+    background: var(--aura-purple);
+    border: none;
+    padding: 0 2rem;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
