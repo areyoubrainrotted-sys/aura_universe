@@ -2,9 +2,9 @@
     --bg-dark: #020205;
     --aura-purple: #7d5fff;
     --aura-cyan: #00d2ff;
-    --deep-space: #0a0a1a;
     --glass: rgba(255, 255, 255, 0.03);
     --border: rgba(125, 95, 255, 0.2);
+    --space-gradient: radial-gradient(circle at 50% -20%, #1a1a3a 0%, #05050a 60%, #020205 100%);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -15,159 +15,177 @@ body {
     color: #f0f0f0;
     font-family: 'Inter', sans-serif;
     overflow-x: hidden;
+    /* This ensures no content is hidden behind the fixed background */
+    position: relative; 
 }
 
-/* Background Nebula Layer */
+/* --- THE BETTER BACKGROUND --- */
+/* We use two layers to create depth: one for the nebula, one for stars */
 body::before {
     content: '';
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: radial-gradient(circle at 50% 10%, #1a1a3a 0%, #020205 80%);
-    z-index: -1;
+    background: var(--space-gradient);
+    z-index: -2; /* Lowest layer */
 }
 
-/* --- THE OVERLAP FIX: UNIVERSAL SECTION STYLING --- */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    /* Subtle star pattern using a repeating radial gradient */
+    background-image: 
+        radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 90px 40px, var(--aura-cyan), rgba(0,0,0,0));
+    background-size: 200px 200px;
+    opacity: 0.2;
+    z-index: -1; /* Above the nebula, below the content */
+}
+
+/* --- LAYER & OVERLAP FIX --- */
 section, header {
-    min-height: 100vh; /* Each part takes at least the full screen height */
+    /* Use min-height so content can grow on mobile without overlapping */
+    min-height: 100vh; 
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 4rem 10%;
+    padding: 6rem 10%;
     position: relative;
+    z-index: 1; /* Content is always above the background */
 }
 
-/* Header: The Identity */
+/* Header Scene */
 .vessel-header {
     text-align: center;
 }
 
 .main-logo {
-    width: 15rem;
-    height: 15rem;
+    width: clamp(10rem, 30vw, 15rem); /* Responsive sizing */
+    height: auto;
+    aspect-ratio: 1/1;
     border-radius: 50%;
     margin-bottom: 2rem;
-    filter: drop-shadow(0 0 2rem var(--aura-purple));
+    filter: drop-shadow(0 0 3rem var(--aura-purple));
     animation: float 6s ease-in-out infinite;
+    border: 2px solid var(--border);
 }
 
 @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(2deg); }
 }
 
 .glitch-text {
     font-family: 'Orbitron', sans-serif;
-    font-size: clamp(2rem, 8vw, 4rem); /* Scales perfectly on mobile */
-    letter-spacing: 1rem;
+    font-size: clamp(2.5rem, 10vw, 5rem);
+    letter-spacing: 1.2rem;
     text-transform: uppercase;
-    background: linear-gradient(to bottom, #fff 30%, var(--aura-purple));
+    background: linear-gradient(to bottom, #fff 40%, var(--aura-purple));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 10px rgba(125, 95, 255, 0.5));
 }
 
-/* Start Section: The Mysterious Call */
+/* Start Section */
 .core-action {
-    background: linear-gradient(to bottom, transparent, rgba(125,95,255,0.05), transparent);
-}
-
-.mysterious-intro {
-    font-size: 1.2rem;
-    letter-spacing: 0.2rem;
-    color: #888;
-    margin-bottom: 2em;
+    /* Adds a subtle fade between sections to prevent "bog" look */
+    background: linear-gradient(to bottom, transparent, rgba(125,95,255,0.03) 50%, transparent);
 }
 
 .start-btn {
     padding: 1.5rem 4rem;
     border: 1px solid var(--aura-purple);
-    border-radius: 1em;
+    border-radius: 5rem; /* Rounded looks more "modern/app" like */
     color: white;
     text-decoration: none;
     font-family: 'Orbitron', sans-serif;
     letter-spacing: 0.4rem;
-    position: relative;
-    overflow: hidden;
-    transition: 0.4s;
+    transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(125, 95, 255, 0.1);
+    backdrop-filter: blur(5px);
 }
 
 .start-btn:hover {
     background: var(--aura-purple);
-    box-shadow: 0 0 4rem var(--aura-purple);
-    transform: scale(1.1);
+    box-shadow: 0 0 50px var(--aura-purple);
+    transform: scale(1.05) translateY(-5px);
 }
 
-/* Why Choose Us: The Grid */
+/* Feature Grid Fix */
 .feature-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    /* minmax(280px) prevents boxes from getting too skinny on mobile */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2.5rem;
     width: 100%;
-    margin-top: 3rem;
+    max-width: 1200px;
 }
 
 .feature-item {
     background: var(--glass);
     padding: 3rem;
     border: 1px solid var(--border);
-    border-radius: 1rem;
-    backdrop-filter: blur(10px);
-    transition: 0.4s;
-    text-align: left;
+    border-radius: 1.5rem;
+    backdrop-filter: blur(15px);
+    transition: 0.4s ease;
+    /* Fixes any weird internal overlapping */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
 .feature-item:hover {
     border-color: var(--aura-cyan);
-    transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 10px 30px rgba(0, 210, 255, 0.1);
+    background: rgba(125, 95, 255, 0.05);
+    transform: translateY(-15px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
 }
 
-.feature-item span {
-    font-size: 2.5rem;
-    display: block;
-    margin-bottom: 1rem;
-}
-
-.feature-item h3 {
-    font-family: 'Orbitron', sans-serif;
-    color: var(--aura-cyan);
-    margin-bottom: 1rem;
-}
-
-/* Reviews: The Transmission */
-.review-scroll {
-    width: 100%;
-    max-width: 900px;
-}
-
+/* --- THE REVIEWS (THE TRANSMISSION) --- */
 .review-card {
-    background: rgba(255,255,255,0.02);
-    border-left: 3px solid var(--aura-purple);
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--aura-cyan);
     padding: 2rem;
     margin-bottom: 2rem;
-    font-style: italic;
+    border-radius: 0 1rem 1rem 0;
+    backdrop-filter: blur(5px);
 }
 
+/* Leave Review Input Fix */
 .leave-review {
     display: flex;
     width: 100%;
     max-width: 600px;
-    margin-top: 3rem;
+    gap: 0; /* Merged look */
+    border-radius: 5rem;
+    overflow: hidden;
+    border: 1px solid var(--border);
 }
 
 .leave-review input {
     flex: 1;
-    background: #000;
-    border: 1px solid var(--border);
-    padding: 1rem;
+    background: rgba(0, 0, 0, 0.8);
+    border: none;
+    padding: 1.2rem 2rem;
     color: white;
+    outline: none;
 }
 
 .leave-review button {
     background: var(--aura-purple);
     border: none;
-    padding: 0 2rem;
+    padding: 0 2.5rem;
     color: white;
+    font-family: 'Orbitron', sans-serif;
     cursor: pointer;
-    font-weight: bold;
+    transition: 0.3s;
+}
+
+.leave-review button:hover {
+    background: var(--aura-cyan);
+    color: #000;
 }
