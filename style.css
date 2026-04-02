@@ -1,0 +1,107 @@
+/* style.css */
+:root {
+    --bg-dark: #05050a;
+    --aura-purple: #7d5fff;
+    --aura-cyan: #00d2ff;
+    --glass: rgba(255, 255, 255, 0.03);
+    --border: rgba(125, 95, 255, 0.2);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+    background: var(--bg-dark);
+    color: #e0e0e0;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+}
+
+/* Mysterious Background Effect */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #05050a 100%);
+    z-index: -1;
+}
+
+/* Header & Identity */
+.vessel-header {
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.main-logo {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    box-shadow: 0 0 50px var(--aura-purple);
+    margin-bottom: 25px;
+    transition: 0.5s;
+}
+
+.main-logo:hover { transform: scale(1.05) rotate(5deg); }
+
+/* Buttons & Links */
+.start-btn {
+    padding: 15px 40px;
+    border: 2px solid var(--aura-purple);
+    color: var(--aura-purple);
+    background: transparent;
+    font-weight: bold;
+    text-decoration: none;
+    letter-spacing: 2px;
+    transition: 0.3s;
+}
+
+.start-btn:hover {
+    background: var(--aura-purple);
+    color: white;
+    box-shadow: 0 0 30px var(--aura-purple);
+}
+
+/* Review Cards */
+.review-card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    padding: 20px;
+    margin: 15px 0;
+    border-left: 4px solid var(--aura-cyan);
+    backdrop-filter: blur(10px);
+}
+
+.author {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.8rem;
+    color: var(--aura-cyan);
+    text-transform: uppercase;
+}
+
+/* Review Input Area */
+.leave-review {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+.leave-review input {
+    flex: 1;
+    background: rgba(0,0,0,0.5);
+    border: 1px solid var(--border);
+    padding: 12px;
+    color: white;
+}
+
+.leave-review button {
+    background: var(--aura-purple);
+    border: none;
+    padding: 0 25px;
+    color: white;
+    cursor: pointer;
+}
