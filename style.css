@@ -7,7 +7,6 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
 html { scroll-behavior: smooth; }
 
 body {
@@ -15,19 +14,17 @@ body {
     color: #f0f0f0;
     font-family: 'Inter', system-ui, sans-serif;
     overflow-x: hidden;
-    min-height: 100dvh;
 }
 
-/* Cinematic Background (kept + slightly refined) */
+/* Background */
 body::before {
     content: '';
     position: fixed;
     inset: 0;
     z-index: -2;
-    background: 
-        radial-gradient(circle at 30% 20%, #1a1a3a 0%, transparent 60%),
-        radial-gradient(circle at 70% 70%, #0f0f2e 0%, transparent 65%),
-        radial-gradient(circle at 50% 80%, #02020a 0%, var(--bg-dark) 80%);
+    background: radial-gradient(circle at 30% 20%, #1a1a3a 0%, transparent 60%),
+                radial-gradient(circle at 70% 70%, #0f0f2e 0%, transparent 65%),
+                radial-gradient(circle at 50% 80%, #02020a 0%, var(--bg-dark) 80%);
 }
 
 body::after {
@@ -40,23 +37,21 @@ body::after {
     mix-blend-mode: screen;
 }
 
-/* ====================== HERO HEADER ====================== */
+/* HERO - Clean & Balanced */
 .vessel-header {
-    width: 100%;
-    min-height: 100dvh;           /* Only one element has 100vh */
+    min-height: 100dvh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 4rem 1.5rem 6rem;
-    position: relative;
-    gap: 1.5rem;                  /* Controls spacing between logo, title, subtitle, button */
+    padding: 2rem 1.5rem;
+    gap: 1.8rem;           /* Controls space between logo, title, subtitle, button */
 }
 
 .logo-wrapper {
     position: relative;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .main-logo {
@@ -80,49 +75,28 @@ body::after {
     animation: aura-pulse 8s ease-in-out infinite;
 }
 
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-22px); }
-}
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-22px); } }
+@keyframes aura-pulse { 0%, 100% { opacity: 0.45; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 0.65; transform: translate(-50%, -50%) scale(1.07); } }
 
-@keyframes aura-pulse {
-    0%, 100% { opacity: 0.45; transform: translate(-50%, -50%) scale(1); }
-    50% { opacity: 0.65; transform: translate(-50%, -50%) scale(1.07); }
-}
-
-/* Big Title */
 .glitch-text {
     font-family: 'Orbitron', sans-serif;
-    font-size: clamp(3.2rem, 10vw, 6rem);
-    font-weight: 700;
+    font-size: clamp(3rem, 9vw, 5.8rem);
     letter-spacing: 1.1rem;
     text-transform: uppercase;
     background: linear-gradient(to bottom, #fff 35%, var(--aura-purple) 95%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 1.2rem;
     line-height: 1.05;
 }
 
-/* Subtitle - Much better size + spacing */
 .mysterious-intro {
-    font-size: clamp(1.35rem, 4.5vw, 2.1rem);
-    max-width: 720px;
+    font-size: clamp(1.35rem, 4.8vw, 2.15rem);
+    max-width: 780px;
     line-height: 1.35;
     color: #d0d0e0;
-    margin-bottom: 2.5rem;
-    opacity: 0.95;
+    margin-bottom: 1.5rem;
 }
 
-/* Action Box removed → direct structure for better control */
-.hero-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-}
-
-/* Start Button (improved) */
 .start-btn {
     padding: 1.35rem 4.8rem;
     background: rgba(125, 95, 255, 0.09);
@@ -135,16 +109,53 @@ body::after {
     text-transform: uppercase;
     text-decoration: none;
     backdrop-filter: blur(16px);
-    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: all 0.5s ease;
 }
 
 .start-btn:hover {
     background: var(--aura-purple);
     box-shadow: 0 0 55px rgba(125, 95, 255, 0.75);
-    transform: scale(1.07) translateY(-3px);
+    transform: scale(1.07);
 }
 
-/* Keep your other sections (feature-grid, review-scroll, etc.) but increase their padding if needed */
+/* Other sections - better spacing */
 .philosophy, .transmissions {
-    padding: 8rem 1.5rem;
+    padding: 7rem 1.5rem 8rem;
+    text-align: center;
 }
+
+.section-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2rem, 6vw, 3.2rem);
+    margin-bottom: 4rem;
+    letter-spacing: 0.3rem;
+    color: var(--aura-purple);
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.feature-item {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    padding: 3rem 2rem;
+    border-radius: 24px;
+    backdrop-filter: blur(20px);
+}
+
+.review-scroll, .leave-review {
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+/* Small typo fixes I made in the HTML above:
+   - "avaliable" → "available"
+   - "Continueous" → "Continuous"
+   - "garanteed" → "guaranteed"
+   - "is avaliable Activate" → cleaner sentence */
+
