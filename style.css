@@ -153,9 +153,65 @@ body::after {
     margin: 0 auto;
 }
 
-/* Small typo fixes I made in the HTML above:
-   - "avaliable" → "available"
-   - "Continueous" → "Continuous"
-   - "garanteed" → "guaranteed"
-   - "is avaliable Activate" → cleaner sentence */
+/* ====================== LIVE PROOF SECTION ====================== */
+.live-proof {
+    padding: 7rem 1.5rem 8rem;
+    text-align: center;
+    background: rgba(10, 10, 25, 0.6);
+}
+
+.section-subtitle {
+    font-size: 1.35rem;
+    color: #b0b0cc;
+    max-width: 700px;
+    margin: 0 auto 4rem;
+    line-height: 1.5;
+}
+
+.screenshot-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 2.5rem;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.screenshot-card {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    overflow: hidden;
+    backdrop-filter: blur(20px);
+    transition: all 0.4s ease;
+}
+
+.screenshot-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 20px 40px rgba(0, 210, 255, 0.15);
+    border-color: var(--aura-cyan);
+}
+
+.server-screenshot {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-bottom: 1px solid rgba(125, 95, 255, 0.15);
+}
+
+.caption {
+    padding: 1.5rem;
+    text-align: left;
+    font-size: 1.05rem;
+    line-height: 1.45;
+    color: #e0e0f0;
+}
+
+.proof-note {
+    margin-top: 4rem;
+    font-size: 1.1rem;
+    color: #a0a0c0;
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+}
 
