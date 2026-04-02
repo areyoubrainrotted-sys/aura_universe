@@ -81,7 +81,7 @@ header, section, main {
     font-size: 1.2rem;
     color: #888;
     max-width: 600px;
-    justify-content: center;
+    align-items: center;
 }
 
 .start-btn {
@@ -95,7 +95,7 @@ header, section, main {
     letter-spacing: 0.3rem;
     transition: 0.4s;
     backdrop-filter: blur(10px);
-    justify-content: center;
+    align-items: center;
 }
 
 .start-btn:hover {
