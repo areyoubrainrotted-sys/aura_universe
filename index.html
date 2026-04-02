@@ -1,1 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Universe | The Ultimate Racing Bot</title>
+    <link rel="stylesheet" href="Style.css">
+</head>
+<body>
 
+    <section class="hero">
+        <img src="YOUR_BOT_LOGO_URL_HERE" alt="Aura Universe Logo" class="bot-logo">
+        <h1>Aura Universe</h1>
+        <p class="tagline">The most advanced chatting & economy system for Discord.</p>
+        <div class="hero-btns">
+            <a href="#setup" class="btn-primary">Start Now</a>
+            <a href="#features" class="btn-secondary">Why Choose Us?</a>
+        </div>
+    </section>
+
+    <section id="features" class="features-grid">
+        <div class= "feature-card">
+          <h3>Tons of social features</h3>
+          <table class="feature_table">
+            <tr>
+              <th class="">True or dare</th>
+              <td>True or dare but bot rate it</td>
+              <td><img src="tod.pg" alt="User Photo" width="50"></td>
+            </tr> 
+            <tr>
+              <th>Meme challenge</th>
+              <td></td>
+            </tr>
+          </table>
+        <div class="feature-card">
+            <h3>🏎️ Real-Time Racing</h3>
+            <p>Advanced simulation logic with custom cars and performance upgrades.</p>
+        </div>
+        <div class="feature-card">
+            <h3>📈 Fortune 50</h3>
+            <p>Compete for the top spot in a global corporate leaderboard. Build your empire.</p>
+        </div>
+        <div class="feature-card">
+            <h3>⚙️ Fully Modular</h3>
+            <p>Don't want economy? Turn it off. You only use the features your server needs.</p>
+        </div>
+    </section>
+
+    <section id="setup" class="container">
+        <div class="setup-card">
+            <h2>🛠️ Configure Your Instance</h2>
+            <div class="input-group">
+                <label for="guild-id">Server ID</label>
+                <input type="text" id="guild-id" placeholder="Paste your Server ID here">
+            </div>
+
+            <div class="modules">
+                <div class="module-item">
+                    <input type="checkbox" id="racing-mode" checked>
+                    <label for="racing-mode">Racing System</label>
+                </div>
+                <div class="module-item">
+                    <input type="checkbox" id="economy-mode">
+                    <label for="economy-mode">Economy & Fortune 50</label>
+                </div>
+            </div>
+
+            <button id="save-btn" onclick="saveSettings()">Save Configuration</button>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
+</body>
+</html>
