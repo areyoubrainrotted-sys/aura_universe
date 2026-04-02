@@ -4,33 +4,21 @@
     --aura-cyan: #00d2ff;
     --glass: rgba(255, 255, 255, 0.035);
     --glass-border: rgba(125, 95, 255, 0.18);
-    --text-primary: #f0f0f0;
-    --text-secondary: #b0b0cc;
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-html {
-    scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
     background-color: var(--bg-dark);
-    color: var(--text-primary);
+    color: #f0f0f0;
     font-family: 'Inter', system-ui, sans-serif;
     overflow-x: hidden;
     min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    line-height: 1.6;
 }
 
-/* ====================== CINEMATIC BACKGROUND ====================== */
+/* Cinematic Background (kept + slightly refined) */
 body::before {
     content: '';
     position: fixed;
@@ -40,7 +28,6 @@ body::before {
         radial-gradient(circle at 30% 20%, #1a1a3a 0%, transparent 60%),
         radial-gradient(circle at 70% 70%, #0f0f2e 0%, transparent 65%),
         radial-gradient(circle at 50% 80%, #02020a 0%, var(--bg-dark) 80%);
-    background-attachment: fixed;
 }
 
 body::after {
@@ -48,254 +35,116 @@ body::after {
     position: fixed;
     inset: 0;
     z-index: -1;
-    background-image: 
-        url('https://www.transparenttextures.com/patterns/stardust.png'),
-        radial-gradient(circle at center, rgba(125, 95, 255, 0.08) 0%, transparent 70%);
-    background-size: cover;
+    background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
     opacity: 0.35;
     mix-blend-mode: screen;
-    pointer-events: none;
 }
 
-/* ====================== MAIN LAYOUT ====================== */
-header, main, section {
+/* ====================== HERO HEADER ====================== */
+.vessel-header {
     width: 100%;
-    max-width: 1280px;
-    min-height: 100dvh;
+    min-height: 100dvh;           /* Only one element has 100vh */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 6rem 1.5rem;
+    padding: 4rem 1.5rem 6rem;
     position: relative;
+    gap: 1.5rem;                  /* Controls spacing between logo, title, subtitle, button */
 }
 
-/* ====================== LOGO + AURA ====================== */
 .logo-wrapper {
     position: relative;
-    margin-bottom: 2.5rem;
+    margin-bottom: 1rem;
 }
 
 .main-logo {
-    width: 15rem;
-    height: 15rem;
+    width: 14rem;
+    height: 14rem;
     border-radius: 50%;
     border: 2px solid var(--glass-border);
-    box-shadow: 
-        0 0 60px rgba(125, 95, 255, 0.4),
-        inset 0 0 40px rgba(255,255,255,0.1);
-    z-index: 2;
-    position: relative;
+    box-shadow: 0 0 60px rgba(125, 95, 255, 0.45);
     animation: float 7s ease-in-out infinite;
-    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.main-logo:hover {
-    transform: scale(1.08) rotate(8deg);
 }
 
 .aura-glow {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 19rem;
-    height: 19rem;
+    top: 50%; left: 50%;
+    width: 18rem; height: 18rem;
     background: var(--aura-purple);
     filter: blur(70px);
     opacity: 0.45;
     transform: translate(-50%, -50%);
     border-radius: 50%;
-    z-index: 1;
     animation: aura-pulse 8s ease-in-out infinite;
 }
 
 @keyframes float {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-25px); }
+    50% { transform: translateY(-22px); }
 }
 
 @keyframes aura-pulse {
     0%, 100% { opacity: 0.45; transform: translate(-50%, -50%) scale(1); }
-    50% { opacity: 0.65; transform: translate(-50%, -50%) scale(1.08); }
+    50% { opacity: 0.65; transform: translate(-50%, -50%) scale(1.07); }
 }
 
-/* ====================== TYPOGRAPHY ====================== */
+/* Big Title */
 .glitch-text {
     font-family: 'Orbitron', sans-serif;
-    font-size: clamp(2.8rem, 9vw, 5.2rem);
+    font-size: clamp(3.2rem, 10vw, 6rem);
     font-weight: 700;
-    letter-spacing: 0.9rem;
+    letter-spacing: 1.1rem;
     text-transform: uppercase;
-    background: linear-gradient(180deg, #ffffff 30%, var(--aura-purple) 100%);
+    background: linear-gradient(to bottom, #fff 35%, var(--aura-purple) 95%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 0 30px rgba(125, 95, 255, 0.6));
+    margin-bottom: 1.2rem;
+    line-height: 1.05;
 }
 
-/* ====================== START BUTTON ====================== */
+/* Subtitle - Much better size + spacing */
+.mysterious-intro {
+    font-size: clamp(1.35rem, 4.5vw, 2.1rem);
+    max-width: 720px;
+    line-height: 1.35;
+    color: #d0d0e0;
+    margin-bottom: 2.5rem;
+    opacity: 0.95;
+}
+
+/* Action Box removed → direct structure for better control */
+.hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+/* Start Button (improved) */
 .start-btn {
-    margin-top: 2.5rem;
-    padding: 1.25rem 4.5rem;
-    background: rgba(125, 95, 255, 0.08);
+    padding: 1.35rem 4.8rem;
+    background: rgba(125, 95, 255, 0.09);
     border: 1.5px solid var(--aura-purple);
     border-radius: 9999px;
     color: white;
     font-family: 'Orbitron', sans-serif;
-    font-size: 1.05rem;
-    letter-spacing: 0.4rem;
+    font-size: 1.1rem;
+    letter-spacing: 0.45rem;
     text-transform: uppercase;
     text-decoration: none;
     backdrop-filter: blur(16px);
     transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-    position: relative;
-    overflow: hidden;
-}
-
-.start-btn::before {
-    content: '';
-    position: absolute;
-    top: 0; left: -100%;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255,255,255,0.3),
-        transparent
-    );
-    transition: 0.7s;
-}
-
-.start-btn:hover::before {
-    left: 200%;
 }
 
 .start-btn:hover {
     background: var(--aura-purple);
-    box-shadow: 0 0 50px rgba(125, 95, 255, 0.7);
-    transform: translateY(-4px) scale(1.06);
-    border-color: #a38eff;
+    box-shadow: 0 0 55px rgba(125, 95, 255, 0.75);
+    transform: scale(1.07) translateY(-3px);
 }
 
-/* ====================== FEATURE GRID ====================== */
-.feature-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2.8rem;
-    width: 100%;
-    padding: 2rem 0;
-}
-
-.feature-item {
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    padding: 3.2rem 2.5rem;
-    border-radius: 24px;
-    backdrop-filter: blur(20px);
-    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-    position: relative;
-    overflow: hidden;
-}
-
-.feature-item::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, transparent, rgba(0, 210, 255, 0.06));
-    opacity: 0;
-    transition: opacity 0.4s;
-}
-
-.feature-item:hover {
-    transform: translateY(-14px);
-    border-color: var(--aura-cyan);
-    box-shadow: 0 25px 50px -12px rgba(0, 210, 255, 0.15);
-}
-
-.feature-item:hover::before {
-    opacity: 1;
-}
-
-/* ====================== REVIEWS SECTION ====================== */
-.review-scroll {
-    width: 100%;
-    max-width: 720px;
-    display: flex;
-    flex-direction: column;
-    gap: 2.2rem;
-    margin: 3rem 0;
-}
-
-.review-card {
-    background: rgba(255, 255, 255, 0.025);
-    border: 1px solid var(--glass-border);
-    padding: 2.8rem;
-    border-radius: 20px;
-    text-align: left;
-    border-left: 6px solid var(--aura-cyan);
-    backdrop-filter: blur(16px);
-    transition: all 0.4s ease;
-    animation: slideIn 0.6s ease-out forwards;
-}
-
-.review-card:hover {
-    border-left-color: var(--aura-purple);
-    transform: translateX(8px);
-    box-shadow: 0 15px 35px -10px rgba(125, 95, 255, 0.2);
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateX(-30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-/* ====================== REVIEW INPUT ====================== */
-.leave-review {
-    display: flex;
-    width: 100%;
-    max-width: 520px;
-    background: rgba(10, 10, 20, 0.7);
-    border: 1px solid var(--glass-border);
-    border-radius: 9999px;
-    overflow: hidden;
-    backdrop-filter: blur(20px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-}
-
-.leave-review input {
-    flex: 1;
-    background: transparent;
-    border: none;
-    padding: 1.35rem 1.8rem;
-    color: white;
-    font-size: 1.05rem;
-    outline: none;
-}
-
-.leave-review input::placeholder {
-    color: #8888aa;
-}
-
-.leave-review button {
-    background: linear-gradient(90deg, var(--aura-purple), #a38eff);
-    border: none;
-    padding: 0 2.8rem;
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: 'Orbitron', sans-serif;
-    letter-spacing: 0.5px;
-}
-
-.leave-review button:hover {
-    background: linear-gradient(90deg, #a38eff, var(--aura-cyan));
-    transform: scale(1.05);
+/* Keep your other sections (feature-grid, review-scroll, etc.) but increase their padding if needed */
+.philosophy, .transmissions {
+    padding: 8rem 1.5rem;
 }
