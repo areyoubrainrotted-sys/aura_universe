@@ -6,7 +6,7 @@
   --glass: rgba(255, 255, 255, 0.03);
 }
 
-/* 1. RESET & CORE */
+/* 1. RESET & CORE - The Foundation */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -18,22 +18,20 @@ html, body {
   background-color: var(--bg-dark);
   color: #f0f0f0;
   font-family: 'Inter', sans-serif;
-  overflow-x: hidden;
+  overflow-x: hidden; /* Stops horizontal "mess" */
 }
 
+/* Background Texture */
 body::before {
   content: '';
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0; width: 100%; height: 100%;
   background: radial-gradient(circle at 50% 20%, #1a1a3a 0%, #05050a 60%), 
               url('https://transparenttextures.com');
   z-index: -2;
 }
 
-/* 2. SECTION WRAPPERS */
+/* 2. SECTION WRAPPERS - Natural Stacking */
 header, section, main {
   width: 100%;
   max-width: 1200px;
@@ -41,20 +39,18 @@ header, section, main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  padding: 8rem 2rem;
-  position: relative;
+  padding: 4rem 1.5rem; /* Reduced padding so content isn't squeezed small */
 }
 
-/* Only the Hero header should be full height */
+/* Only the Hero (first section) is full screen */
 header {
   min-height: 100vh;
   justify-content: center;
 }
 
-/* 3. LOGO & TITLE */
+/* 3. LOGO & TEXT */
 .main-logo {
-  width: clamp(8rem, 20vw, 12rem);
+  width: clamp(10rem, 25vw, 15rem);
   height: auto;
   border-radius: 50%;
   margin-bottom: 2rem;
@@ -64,68 +60,95 @@ header {
 
 .glitch-text {
   font-family: 'Orbitron', sans-serif;
-  font-size: clamp(2rem, 8vw, 4.5rem);
-  letter-spacing: 0.8rem;
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  letter-spacing: 0.5rem;
   background: linear-gradient(to bottom, #fff, var(--aura-purple));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
-/* 4. THE PULSING ROUND BUTTON */
+/* 4. ROUND PULSING BUTTON */
 .start-btn {
-  padding: 1.2rem 3.5rem;
+  padding: 1.2rem 4rem;
   background: rgba(125, 95, 255, 0.1);
   border: 2px solid var(--aura-purple);
-  border-radius: 50px; /* Makes it perfectly round on the ends */
+  border-radius: 100px; /* Force it to be pill-shaped/round */
   color: #fff;
   text-decoration: none;
   font-family: 'Orbitron', sans-serif;
-  letter-spacing: 0.3rem;
-  transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  font-weight: bold;
+  letter-spacing: 0.2rem;
+  transition: 0.4s;
   backdrop-filter: blur(10px);
-  animation: pulse 2s infinite; /* Continuous glow animation */
+  animation: pulseGlow 2s infinite ease-in-out; /* The animation */
 }
 
 .start-btn:hover {
   background: var(--aura-purple);
-  box-shadow: 0 0 50px var(--aura-purple);
-  transform: scale(1.1);
-  animation: none; /* Stops pulse on hover to emphasize the scale */
+  box-shadow: 0 0 40px var(--aura-purple);
+  transform: scale(1.05);
 }
 
-/* 5. FEATURES GRID */
+/* 5. FEATURES GRID - Fixed Width */
 .feature-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2.5rem;
-  width: 100%;
-  margin-top: 3rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  width: 100%; /* Ensures it doesn't shrink */
+  margin-top: 2rem;
 }
 
 .feature-item {
   background: var(--glass);
   border: 1px solid var(--border);
   border-radius: 20px;
-  padding: 3rem;
+  padding: 2.5rem;
   transition: 0.4s;
 }
 
-.feature-item:hover {
-  transform: translateY(-10px);
-  border-color: var(--aura-cyan);
-  box-shadow: 0 10px 30px rgba(0, 210, 255, 0.1);
+/* 6. REVIEW BOX - Fixed Smallness */
+.leave-review {
+  display: flex;
+  width: 100%;
+  max-width: 600px; /* Made wider for better readability */
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  overflow: hidden;
+  margin: 3rem auto;
 }
 
-/* 6. ANIMATIONS */
+.leave-review input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 1.2rem 2rem;
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+}
+
+.leave-review button {
+  background: var(--aura-purple);
+  border: none;
+  padding: 0 2.5rem;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+/* 7. ANIMATIONS */
 @keyframes float {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
+  50% { transform: translateY(-15px); }
 }
 
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(125, 95, 255, 0.7); }
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 0 0 rgba(125, 95, 255, 0.4); }
   70% { box-shadow: 0 0 0 20px rgba(125, 95, 255, 0); }
   100% { box-shadow: 0 0 0 0 rgba(125, 95, 255, 0); }
 }
+
 
