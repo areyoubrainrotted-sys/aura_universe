@@ -3,73 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aura Universe | The Ultimate Racing Bot</title>
-    <link rel="stylesheet" href="Style.css">
+    <title>Aura Universe | Create a remarkable venture</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <section class="hero">
-        <img src="YOUR_BOT_LOGO_URL_HERE" alt="Aura Universe Logo" class="bot-logo">
-        <h1>Aura Universe</h1>
-        <p class="tagline">The most advanced chatting & economy system for Discord.</p>
-        <div class="hero-btns">
-            <a href="#setup" class="btn-primary">Start Now</a>
-            <a href="#features" class="btn-secondary">Why Choose Us?</a>
+    <header class="vessel-header">
+        <div class="logo-container">
+            <img src="https://cdn.discordapp.com/attachments/1477978315850645562/1478374263613427883/IMG_0389.png?ex=69cf0f13&is=69cdbd93&hm=78012bcdd8af86560010b76527256489aeb23147b0ef105cff0198b062a6f4e3" alt="Aura Logo" class="main-logo">
+            <div class="glow-effect"></div>
         </div>
-    </section>
+        <h1 class="glitch-text">AURA UNIVERSE</h1>
+    </header>
 
-    <section id="features" class="features-grid">
-        <div class= "feature-card">
-          <h3>Tons of social features</h3>
-          <table class="feature_table">
-            <tr>
-              <th class="">True or dare</th>
-              <td>True or dare but bot rate it</td>
-              <td><img src="tod.pg" alt="User Photo" width="50"></td>
-            </tr> 
-            <tr>
-              <th>Meme challenge</th>
-              <td></td>
-            </tr>
-          </table>
-        <div class="feature-card">
-            <h3>🏎️ Real-Time Racing</h3>
-            <p>Advanced simulation logic with custom cars and performance upgrades.</p>
+    <main class="core-action">
+        <div class="action-box">
+            <p class="mysterious-intro">The stars have aligned for your server. Are you ready to lead?</p>
+            <a href="#setup" class="start-btn">INITIALIZE CORE</a>
         </div>
-        <div class="feature-card">
-            <h3>📈 Fortune 50</h3>
-            <p>Compete for the top spot in a global corporate leaderboard. Build your empire.</p>
-        </div>
-        <div class="feature-card">
-            <h3>⚙️ Fully Modular</h3>
-            <p>Don't want economy? Turn it off. You only use the features your server needs.</p>
-        </div>
-    </section>
+    </main>
 
-    <section id="setup" class="container">
-        <div class="setup-card">
-            <h2>🛠️ Configure Your Instance</h2>
-            <div class="input-group">
-                <label for="guild-id">Server ID</label>
-                <input type="text" id="guild-id" placeholder="Paste your Server ID here">
+    <section class="philosophy">
+        <h2 class="section-title">WHY CHOOSE US?</h2>
+        <div class="feature-grid">
+            <div class="feature-item">
+                <span class="icon">⚛️</span>
+                <h3>Abundant game modes</h3>
+                <p>Over 10 modes is avaliable Activate only the modules your desire.</p>
             </div>
-
-            <div class="modules">
-                <div class="module-item">
-                    <input type="checkbox" id="racing-mode" checked>
-                    <label for="racing-mode">Racing System</label>
-                </div>
-                <div class="module-item">
-                    <input type="checkbox" id="economy-mode">
-                    <label for="economy-mode">Economy & Fortune 50</label>
-                </div>
+            <div class="feature-item">
+                <span class="icon">🌌</span>
+                <h3>Universal community</h3>
+                <p>Cross server interaction allowed, infinite possibilities</p>
             </div>
-
-            <button id="save-btn" onclick="saveSettings()">Save Configuration</button>
+            <div class="feature-item">
+                <span class="icon">🛰️</span>
+                <h3>Continueous improvement</h3>
+                <p>Consistent update garanteed</p>
+            </div>
         </div>
     </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <section class="transmissions">
+        <h2 class="section-title">COMMUNICATIONS RECEIVED</h2>
+        <div class="review-scroll">
+            <div class="review-card">
+                <p>"The Aura system changed how our racing league operates. Flawless."</p>
+                <span class="author">- Captain Dex</span>
+            </div>
+            <div class="review-card">
+                <p>"Finally, a bot that doesn't feel like a toy. It feels like a platform."</p>
+                <span class="author">- VeloCity Admin</span>
+            </div>
+        </div>
+        
+        <div class="leave-review">
+            <input type="text" placeholder="Leave a transmission..." id="user-review">
+            <button onclick="sendReview()">SEND</button>
+        </div>
+    </section>
+
+    <footer class="void-footer">
+        <p>&copy; 2026 Aura Universe. Built for the Galaxy.</p>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
