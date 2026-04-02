@@ -1,171 +1,165 @@
 :root {
-    --bg-dark: #05050a;
+    --bg-dark: #020205;
     --aura-purple: #7d5fff;
     --aura-cyan: #00d2ff;
+    --deep-space: #0a0a1a;
     --glass: rgba(255, 255, 255, 0.03);
     --border: rgba(125, 95, 255, 0.2);
-    --font-main: 'Inter', sans-serif;
-    --font-tech: 'Orbitron', sans-serif; /* Recommended for that mysterious look */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { 
-    scroll-behavior: smooth; 
-    font-size: 16px; /* Base for 1rem */
-}
+html { scroll-behavior: smooth; font-size: 16px; }
 
 body {
     background: var(--bg-dark);
-    color: #e0e0e0;
-    font-family: var(--font-main);
+    color: #f0f0f0;
+    font-family: 'Inter', sans-serif;
     overflow-x: hidden;
-    line-height: 1.6;
 }
 
-/* Mysterious Background Nebula */
+/* Background Nebula Layer */
 body::before {
     content: '';
     position: fixed;
-    top: 0; left: 0; 
-    width: 100%; height: 100%;
-    background: radial-gradient(circle at 50% 50%, #16162d 0%, #05050a 100%);
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at 50% 10%, #1a1a3a 0%, #020205 80%);
     z-index: -1;
 }
 
-/* --- ANIMATIONS --- */
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-1.5rem); }
-}
-
-@keyframes glow-pulse {
-    0%, 100% { box-shadow: 0 0 2rem var(--aura-purple); }
-    50% { box-shadow: 0 0 4rem var(--aura-purple), 0 0 1.5rem var(--aura-cyan); }
-}
-
-/* Header & Identity */
-.vessel-header {
-    min-height: 85vh;
+/* --- THE OVERLAP FIX: UNIVERSAL SECTION STYLING --- */
+section, header {
+    min-height: 100vh; /* Each part takes at least the full screen height */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 4rem 10%;
+    position: relative;
+}
+
+/* Header: The Identity */
+.vessel-header {
     text-align: center;
-    padding: 2rem;
 }
 
 .main-logo {
-    width: 12.5rem; /* ~200px */
-    height: 12.5rem;
+    width: 15rem;
+    height: 15rem;
     border-radius: 50%;
     margin-bottom: 2rem;
-    animation: float 5s ease-in-out infinite, glow-pulse 8s infinite;
-    border: 0.15rem solid var(--border);
-    transition: 0.5s ease;
+    filter: drop-shadow(0 0 2rem var(--aura-purple));
+    animation: float 6s ease-in-out infinite;
 }
 
-.main-logo:hover {
-    transform: scale(1.1) rotate(10deg);
-    cursor: pointer;
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
 }
 
 .glitch-text {
-    font-family: var(--font-tech);
-    font-size: 3rem;
-    letter-spacing: 0.6rem;
-    background: linear-gradient(to right, #fff, var(--aura-purple));
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2rem, 8vw, 4rem); /* Scales perfectly on mobile */
+    letter-spacing: 1rem;
+    text-transform: uppercase;
+    background: linear-gradient(to bottom, #fff 30%, var(--aura-purple));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 1.5rem;
 }
 
-/* Core Action (The Middle) */
+/* Start Section: The Mysterious Call */
 .core-action {
-    padding: 5rem 10%;
-    text-align: center;
+    background: linear-gradient(to bottom, transparent, rgba(125,95,255,0.05), transparent);
+}
+
+.mysterious-intro {
+    font-size: 1.2rem;
+    letter-spacing: 0.2rem;
+    color: #888;
+    margin-bottom: 3rem;
 }
 
 .start-btn {
-    padding: 1.2rem 3rem;
-    border: 0.1rem solid var(--aura-purple);
+    padding: 1.5rem 4rem;
+    border: 1px solid var(--aura-purple);
     color: white;
-    background: rgba(125, 95, 255, 0.05);
-    font-weight: bold;
     text-decoration: none;
-    letter-spacing: 0.25rem;
-    text-transform: uppercase;
-    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    backdrop-filter: blur(0.5rem);
-    display: inline-block;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 0.4rem;
+    position: relative;
+    overflow: hidden;
+    transition: 0.4s;
 }
 
 .start-btn:hover {
     background: var(--aura-purple);
-    box-shadow: 0 0 3rem var(--aura-purple);
-    transform: translateY(-0.3rem) scale(1.05);
+    box-shadow: 0 0 4rem var(--aura-purple);
+    transform: scale(1.1);
 }
 
-/* Why Choose Us / Reviews */
-.philosophy, .transmissions {
-    padding: 6rem 10%;
-}
-
+/* Why Choose Us: The Grid */
 .feature-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
+    width: 100%;
+    margin-top: 3rem;
 }
 
 .feature-item {
     background: var(--glass);
-    padding: 2.5rem;
-    border: 0.06rem solid var(--border);
-    border-radius: 0.8rem;
-    transition: 0.3s;
+    padding: 3rem;
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    backdrop-filter: blur(10px);
+    transition: 0.4s;
+    text-align: left;
 }
 
 .feature-item:hover {
     border-color: var(--aura-cyan);
-    transform: translateY(-0.5rem);
-    background: rgba(0, 210, 255, 0.02);
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 10px 30px rgba(0, 210, 255, 0.1);
 }
 
-/* Review Cards */
-.review-card {
-    background: var(--glass);
-    border: 0.06rem solid var(--border);
-    padding: 2rem;
-    margin-bottom: 1.5rem;
-    border-left: 0.3rem solid var(--aura-cyan);
-    backdrop-filter: blur(1rem);
-    animation: fadeIn 0.8s ease-out;
-}
-
-.author {
+.feature-item span {
+    font-size: 2.5rem;
     display: block;
-    margin-top: 0.8rem;
-    font-size: 0.75rem;
-    color: var(--aura-cyan);
-    text-transform: uppercase;
-    letter-spacing: 0.1rem;
+    margin-bottom: 1rem;
 }
 
-/* Review Input Area */
+.feature-item h3 {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--aura-cyan);
+    margin-bottom: 1rem;
+}
+
+/* Reviews: The Transmission */
+.review-scroll {
+    width: 100%;
+    max-width: 900px;
+}
+
+.review-card {
+    background: rgba(255,255,255,0.02);
+    border-left: 3px solid var(--aura-purple);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    font-style: italic;
+}
+
 .leave-review {
     display: flex;
-    gap: 0.8rem;
-    margin-top: 2rem;
     width: 100%;
-    max-width: 40rem;
+    max-width: 600px;
+    margin-top: 3rem;
 }
 
 .leave-review input {
     flex: 1;
-    background: rgba(0,0,0,0.6);
-    border: 0.06rem solid var(--border);
+    background: #000;
+    border: 1px solid var(--border);
     padding: 1rem;
     color: white;
-    border-radius: 0.3rem;
 }
 
 .leave-review button {
@@ -173,17 +167,6 @@ body::before {
     border: none;
     padding: 0 2rem;
     color: white;
-    font-weight: bold;
     cursor: pointer;
-    transition: 0.3s;
-}
-
-.leave-review button:hover {
-    background: var(--aura-cyan);
-    box-shadow: 0 0 1.5rem var(--aura-cyan);
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(1rem); }
-    to { opacity: 1; transform: translateY(0); }
+    font-weight: bold;
 }
