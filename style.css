@@ -1,107 +1,189 @@
-/* style.css */
 :root {
     --bg-dark: #05050a;
     --aura-purple: #7d5fff;
     --aura-cyan: #00d2ff;
     --glass: rgba(255, 255, 255, 0.03);
     --border: rgba(125, 95, 255, 0.2);
+    --font-main: 'Inter', sans-serif;
+    --font-tech: 'Orbitron', sans-serif; /* Recommended for that mysterious look */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html { 
+    scroll-behavior: smooth; 
+    font-size: 16px; /* Base for 1rem */
+}
 
 body {
     background: var(--bg-dark);
     color: #e0e0e0;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-main);
     overflow-x: hidden;
+    line-height: 1.6;
 }
 
-/* Mysterious Background Effect */
+/* Mysterious Background Nebula */
 body::before {
     content: '';
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #05050a 100%);
+    top: 0; left: 0; 
+    width: 100%; height: 100%;
+    background: radial-gradient(circle at 50% 50%, #16162d 0%, #05050a 100%);
     z-index: -1;
+}
+
+/* --- ANIMATIONS --- */
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-1.5rem); }
+}
+
+@keyframes glow-pulse {
+    0%, 100% { box-shadow: 0 0 2rem var(--aura-purple); }
+    50% { box-shadow: 0 0 4rem var(--aura-purple), 0 0 1.5rem var(--aura-cyan); }
 }
 
 /* Header & Identity */
 .vessel-header {
-    height: 70vh;
+    min-height: 85vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
+    padding: 2rem;
 }
 
 .main-logo {
-    width: 200px;
-    height: 200px;
+    width: 12.5rem; /* ~200px */
+    height: 12.5rem;
     border-radius: 50%;
-    box-shadow: 0 0 50px var(--aura-purple);
-    margin-bottom: 25px;
-    transition: 0.5s;
+    margin-bottom: 2rem;
+    animation: float 5s ease-in-out infinite, glow-pulse 8s infinite;
+    border: 0.15rem solid var(--border);
+    transition: 0.5s ease;
 }
 
-.main-logo:hover { transform: scale(1.05) rotate(5deg); }
+.main-logo:hover {
+    transform: scale(1.1) rotate(10deg);
+    cursor: pointer;
+}
 
-/* Buttons & Links */
+.glitch-text {
+    font-family: var(--font-tech);
+    font-size: 3rem;
+    letter-spacing: 0.6rem;
+    background: linear-gradient(to right, #fff, var(--aura-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1.5rem;
+}
+
+/* Core Action (The Middle) */
+.core-action {
+    padding: 5rem 10%;
+    text-align: center;
+}
+
 .start-btn {
-    padding: 15px 40px;
-    border: 2px solid var(--aura-purple);
-    color: var(--aura-purple);
-    background: transparent;
+    padding: 1.2rem 3rem;
+    border: 0.1rem solid var(--aura-purple);
+    color: white;
+    background: rgba(125, 95, 255, 0.05);
     font-weight: bold;
     text-decoration: none;
-    letter-spacing: 2px;
-    transition: 0.3s;
+    letter-spacing: 0.25rem;
+    text-transform: uppercase;
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    backdrop-filter: blur(0.5rem);
+    display: inline-block;
 }
 
 .start-btn:hover {
     background: var(--aura-purple);
-    color: white;
-    box-shadow: 0 0 30px var(--aura-purple);
+    box-shadow: 0 0 3rem var(--aura-purple);
+    transform: translateY(-0.3rem) scale(1.05);
+}
+
+/* Why Choose Us / Reviews */
+.philosophy, .transmissions {
+    padding: 6rem 10%;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: 2rem;
+}
+
+.feature-item {
+    background: var(--glass);
+    padding: 2.5rem;
+    border: 0.06rem solid var(--border);
+    border-radius: 0.8rem;
+    transition: 0.3s;
+}
+
+.feature-item:hover {
+    border-color: var(--aura-cyan);
+    transform: translateY(-0.5rem);
+    background: rgba(0, 210, 255, 0.02);
 }
 
 /* Review Cards */
 .review-card {
     background: var(--glass);
-    border: 1px solid var(--border);
-    padding: 20px;
-    margin: 15px 0;
-    border-left: 4px solid var(--aura-cyan);
-    backdrop-filter: blur(10px);
+    border: 0.06rem solid var(--border);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    border-left: 0.3rem solid var(--aura-cyan);
+    backdrop-filter: blur(1rem);
+    animation: fadeIn 0.8s ease-out;
 }
 
 .author {
     display: block;
-    margin-top: 10px;
-    font-size: 0.8rem;
+    margin-top: 0.8rem;
+    font-size: 0.75rem;
     color: var(--aura-cyan);
     text-transform: uppercase;
+    letter-spacing: 0.1rem;
 }
 
 /* Review Input Area */
 .leave-review {
     display: flex;
-    gap: 10px;
-    margin-top: 30px;
+    gap: 0.8rem;
+    margin-top: 2rem;
+    width: 100%;
+    max-width: 40rem;
 }
 
 .leave-review input {
     flex: 1;
-    background: rgba(0,0,0,0.5);
-    border: 1px solid var(--border);
-    padding: 12px;
+    background: rgba(0,0,0,0.6);
+    border: 0.06rem solid var(--border);
+    padding: 1rem;
     color: white;
+    border-radius: 0.3rem;
 }
 
 .leave-review button {
     background: var(--aura-purple);
     border: none;
-    padding: 0 25px;
+    padding: 0 2rem;
     color: white;
+    font-weight: bold;
     cursor: pointer;
+    transition: 0.3s;
+}
+
+.leave-review button:hover {
+    background: var(--aura-cyan);
+    box-shadow: 0 0 1.5rem var(--aura-cyan);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(1rem); }
+    to { opacity: 1; transform: translateY(0); }
 }
