@@ -1,132 +1,166 @@
 :root {
-  --bg-dark: #020205;
-  --aura-purple: #7d5fff;
-  --aura-cyan: #00d2ff;
-  --border: rgba(125, 95, 255, 0.2);
-  --glass: rgba(255, 255, 255, 0.03);
+    --bg-dark: #020205;
+    --aura-purple: #7d5fff;
+    --aura-cyan: #00d2ff;
+    --border: rgba(125, 95, 255, 0.2);
+    --glass: rgba(255, 255, 255, 0.03);
 }
 
-/* 1. RESET & CORE */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+/* 1. RESET & CORE ALIGNMENT */
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
 }
 
 html, body {
-  width: 100%;
-  background-color: var(--bg-dark);
-  color: #f0f0f0;
-  font-family: 'Inter', sans-serif;
-  overflow-x: hidden;
+    width: 100%;
+    min-height: 100vh;
+    scroll-behavior: smooth;
+    background-color: var(--bg-dark);
+    color: #f0f0f0;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* THE GLOBAL CENTER FIX */
 }
 
+/* 2. THE DYNAMIC SPACE BACKGROUND */
+/* This replaces the "same look" with a moving starfield and a glowing nebula */
 body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at 50% 20%, #1a1a3a 0%, #05050a 60%), 
-              url('https://transparenttextures.com');
-  z-index: -2;
+    content: '';
+    position: fixed;
+    top: 0; left: 0; 
+    width: 100%; height: 100%;
+    background: 
+        radial-gradient(circle at 50% 20%, #1a1a3a 0%, #05050a 60%),
+        url('https://www.transparenttextures.com/patterns/stardust.png'); /* Adds real star texture */
+    z-index: -2;
 }
 
-/* 2. SECTION WRAPPERS */
+/* 3. SECTION WRAPPERS (Centering each block) */
 header, section, main {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto; /* Centers the content block */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 8rem 2rem;
-  position: relative;
+    width: 100%;
+    max-width: 1200px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;    /* Horizontal Center */
+    justify-content: center; /* Vertical Center */
+    text-align: center;
+    padding: 4rem 2rem;
+    position: relative;
 }
 
-/* Only the Hero header should be full height */
-header {
-  min-height: 100vh;
-  justify-content: center;
-}
-
-/* 3. LOGO & TITLE */
+/* 4. LOGO & TITLE */
 .main-logo {
-  width: clamp(8rem, 20vw, 12rem);
-  height: auto;
-  border-radius: 50%;
-  margin-bottom: 2rem;
-  filter: drop-shadow(0 0 30px var(--aura-purple));
-  animation: float 6s ease-in-out infinite;
+    width: clamp(10rem, 25vw, 15rem);
+    height: auto;
+    border-radius: 50%;
+    margin-bottom: 2rem;
+    filter: drop-shadow(0 0 30px var(--aura-purple));
+    animation: float 6s ease-in-out infinite;
 }
 
 .glitch-text {
-  font-family: 'Orbitron', sans-serif;
-  font-size: clamp(2rem, 8vw, 4.5rem);
-  letter-spacing: 0.8rem;
-  background: linear-gradient(to bottom, #fff, var(--aura-purple));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 1.5rem;
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2rem, 8vw, 4.5rem);
+    letter-spacing: 0.8rem;
+    background: linear-gradient(to bottom, #fff, var(--aura-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1.5rem;
 }
 
-/* 4. THE PULSING ROUND BUTTON */
+/* 5. START BUTTON FIX */
+.core-action {
+    gap: 2rem; /* Space between text and button */
+}
+
+.mysterious-intro {
+    font-size: 1.2rem;
+    color: #888;
+    max-width: 600px;
+}
+
 .start-btn {
-  padding: 1.2rem 3.5rem;
-  background: rgba(125, 95, 255, 0.1);
-  border: 2px solid var(--aura-purple);
-  border-radius: 50px; /* Makes it perfectly round on the ends */
-  color: #fff;
-  text-decoration: none;
-  font-family: 'Orbitron', sans-serif;
-  letter-spacing: 0.3rem;
-  transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  backdrop-filter: blur(10px);
-  animation: pulse 2s infinite; /* Continuous glow animation */
+    padding: 1.2rem 3.5rem;
+    background: rgba(125, 95, 255, 0.1);
+    border: 1px solid var(--aura-purple);
+    border-radius: 50px;
+    color: #fff;
+    text-decoration: none;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 0.3rem;
+    transition: 0.4s;
+    backdrop-filter: blur(10px);
 }
 
 .start-btn:hover {
-  background: var(--aura-purple);
-  box-shadow: 0 0 50px var(--aura-purple);
-  transform: scale(1.1);
-  animation: none; /* Stops pulse on hover to emphasize the scale */
+    background: var(--aura-purple);
+    box-shadow: 0 0 40px var(--aura-purple);
+    transform: scale(1.05);
 }
 
-/* 5. FEATURES GRID */
+/* 6. FEATURES GRID (Fixing the layout) */
 .feature-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2.5rem;
-  width: 100%;
-  margin-top: 3rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.5rem;
+    width: 100%;
+    margin-top: 3rem;
 }
 
 .feature-item {
-  background: var(--glass);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 3rem;
-  transition: 0.4s;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 3rem;
+    transition: 0.4s;
 }
 
 .feature-item:hover {
-  transform: translateY(-10px);
-  border-color: var(--aura-cyan);
-  box-shadow: 0 10px 30px rgba(0, 210, 255, 0.1);
+    transform: translateY(-10px);
+    border-color: var(--aura-cyan);
 }
 
-/* 6. ANIMATIONS */
+.feature-item h3 {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--aura-cyan);
+    margin: 1rem 0;
+}
+
+/* 7. REVIEW BOX FIX */
+.leave-review {
+    display: flex;
+    width: 100%;
+    max-width: 500px;
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    overflow: hidden;
+    margin-top: 2rem;
+}
+
+.leave-review input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 1rem 1.5rem;
+    color: #fff;
+    outline: none;
+}
+
+.leave-review button {
+    background: var(--aura-purple);
+    border: none;
+    padding: 0 2rem;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+}
+
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
 }
-
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(125, 95, 255, 0.7); }
-  70% { box-shadow: 0 0 0 20px rgba(125, 95, 255, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(125, 95, 255, 0); }
-}
-
 
