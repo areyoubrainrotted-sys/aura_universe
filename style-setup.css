@@ -183,7 +183,10 @@ body::after {
     padding: var(--space-2xl);
     backdrop-filter: blur(20px);
     margin-bottom: var(--space-xl);
-    animation: fadeIn 0.5s ease;
+    
+    /* FIX: Add 'forwards' and set default opacity to 0 */
+    opacity: 0; 
+    animation: fadeIn 0.5s ease forwards; 
 }
 
 @keyframes fadeIn {
