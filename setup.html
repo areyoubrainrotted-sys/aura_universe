@@ -1,191 +1,678 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aura universe - Server setup</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style-setup.css?v=1.1">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/x-icon" href="Images/aura_universe_logo.png">
-</head>
-<body>
-    <div class="setup-container">
-        <!-- Progress Bar -->
-        <div class="progress-wrapper">
-            <div class="progress-steps">
-                <div class="step" data-step="1" id="step1">
-                    <div class="step-number">1</div>
-                    <span class="step-text">Server Identity</span>
-                </div>
-                <div class="step" data-step="2" id="step2">
-                    <div class="step-number">2</div>
-                    <span class="step-text">Features & plans</span>
-                </div>
-                <div class="step" data-step="3" id="step3">
-                    <div class="step-number">3</div>
-                    <span class="step-text">Finalize</span>
-                </div>
-            </div>
-            <div class="progress-bar-bg"></div>
-            <div class="progress-bar-fill" id="progressFill"></div>
-        </div>
+:root {
+    --bg-dark: #020205;
+    --aura-purple: #7d5fff;
+    --aura-cyan: #00d2ff;
+    --aura-green: #00ff88;
+    --aura-gold: #ffd700;
+    --glass: rgba(255, 255, 255, 0.035);
+    --glass-border: rgba(125, 95, 255, 0.18);
+    --success: #00ff88;
+    --error: #ff4757;
+    --warning: #ffa502;
+    
+    /* Typography scale using rem */
+    --font-xs: 0.75rem;
+    --font-sm: 0.875rem;
+    --font-base: 1rem;
+    --font-md: 1.125rem;
+    --font-lg: 1.25rem;
+    --font-xl: 1.5rem;
+    --font-2xl: 1.875rem;
+    --font-3xl: 2.25rem;
+    
+    /* Spacing scale using rem */
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    --space-2xl: 3rem;
+    --space-3xl: 4rem;
+    
+    /* Border radius */
+    --radius-sm: 0.5rem;
+    --radius-md: 1rem;
+    --radius-lg: 1.5rem;
+    --radius-xl: 2rem;
+    --radius-full: 9999rem;
+}
 
-        <!-- Form Sections -->
-        <div id="section1" class="form-section">
-            <h2 class="section-title">Server Identity</h2>
-            <p class="section-subtitle">Define your server's unique presence</p>
-            
-            <div class="form-group">
-                <label>🏷️ Server Name</label>
-                <input type="text" id="serverName" placeholder="e.g., Mystic Realms, Cyber Haven, Fantasy Odyssey" maxlength="100">
-            </div>
-            
-            <div class="form-group">
-                <label>📝 Server Description</label>
-                <textarea id="serverDesc" placeholder="Tell us about your server... What makes it special? What's the vibe?"></textarea>
-            </div>
-            
-            <div class="form-group">
-                <label>🏷️ Custom Invite Code (Optional)</label>
-                <input type="text" id="inviteCode" placeholder="e.g., mystichaven, cyberrealm" maxlength="20">
-            </div>
-          
-            <div class="form-group">
-              <label>🎮 Server Category</label>
-              <div class="server-type-grid" id="serverTypeGrid">
-                    <div class="server-option" data-type="gaming">
-                        <span class="emoji">🎮</span>
-                        <div class="name">Gaming</div>
-                        <div class="desc">Multiplayer games, clans, tournaments</div>
-                    </div>
-                    <div class="server-option" data-type="anime">
-                        <span class="emoji">🎭</span>
-                        <div class="name">Anime</div>
-                        <div class="desc">Waifu wars, manga, cosplay, watch parties</div>
-                    </div>
-                    <div class="server-option" data-type="community">
-                        <span class="emoji">🌍</span>
-                        <div class="name">Community</div>
-                        <div class="desc">Social hub, events, general chat</div>
-                    </div>
-                    <div class="server-option" data-type="roleplay">
-                        <span class="emoji">📖</span>
-                        <div class="name">Roleplay</div>
-                        <div class="desc">Story-driven, character creation, lore</div>
-                    </div>
-                    <div class="server-option" data-type="creative">
-                        <span class="emoji">🎨</span>
-                        <div class="name">Creative</div>
-                        <div class="desc">Art, music, writing, content creation</div>
-                    </div>
-                    <div class="server-option" data-type="tech">
-                        <span class="emoji">💻</span>
-                        <div class="name">Tech</div>
-                        <div class="desc">Coding, development, AI, crypto</div>
-                    </div>
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+}
 
-                <div class="form-group">
-                <label>🎯 Server Size Goal</label>
-                <select id="serverSize">
-                    <option value="small">🌱 Small (Under 100 members)</option>
-                    <option value="medium">🌿 Medium (100-500 members)</option>
-                    <option value="large">🔥 Large (500-2000 members)</option>
-                    <option value="huge">💀 Huge (2000+ members)</option>
-                </select>
-            
-            <div class="button-group">
-                <button class="btn btn-secondary" disabled style="opacity:0.5">Previous</button>
-                <button class="btn btn-primary" onclick="nextStep(2)">Next →</button>
-            </div>
-        </div>
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
 
-        <div id="section2" class="form-section" style="display: none;">
-            <h2 class="section-title">Features and plans</h2>
-            <p class="section-subtitle">Choose what kind of plan below fits you</p>
-                
-            <div class="pricing-container">
-              <div class="pricing-card">
-                <h3>Free</h3>
-                <div class="price">$0<span>/mo</span></div>
-                <ul>
-                  <li>✅Mode's Basic Tier</li>
-                  <li>✅Particle Roles Access</li>
-                  <li>❌Exclusive Shop</li>
-                </ul>
-                <input type="radio" name="plan" value="free" id="plan-free" checked>
-                <label for="plan-free" class="btn-select">Select Free</label>
-               </div>
+@media (max-width: 768px) {
+    html {
+        font-size: 14px;
+    }
+}
 
-              <div class="pricing-card premium">
-              <div class="badge">Popular</div>
-                <h3>Premium</h3>
-                <div class="price">$4.99<span>/mo</span></div>
-                <ul>
-                  <li>Priority Aura Subsidies</li>
-                  <li>Infinite Rod Durability</li>
-                  <li>Expanded Pantry Sync</li>
-                  <li>Custom Company Profiles</li>
-                </ul>
-                <input type="radio" name="plan" value="premium" id="plan-premium">
-                <label for="plan-premium" class="btn-select">Select Premium</label>
-                </div>
-              </div>
+@media (max-width: 480px) {
+    html {
+        font-size: 12px;
+    }
+}
 
-          <div class="extras-section">
-            <h3>Add-on Features</h3>
-            <div class="extras-grid">
-              <label class="extra-item">
-                <input type="checkbox" name="feature" value="auto-craft">
-                <span class="checkmark"></span>
-                Welcoming messages
-              </label>
-              <label class="extra-item">
-                <input type="checkbox" name="feature" value="advanced-stats">
-                <span class="checkmark"></span>
-                Birthday system
-              </label>
-             </div>
-           </div>    
-            
-            <div class="button-group">
-                <button class="btn btn-secondary" onclick="prevStep(1)">← Previous</button>
-                <button class="btn btn-primary" onclick="nextStep(3)">Next →</button>
-            </div>
-        </div>
+body {
+    background-color: var(--bg-dark);
+    color: #f0f0f0;
+    font-family: 'Inter', system-ui, sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
 
-        <div id="section3" class="form-section" style="display: none;">
-            <h2 class="section-title">Review & Finalize</h2>
-            <p class="section-subtitle">Review your server details before submission</p>
-            
-            <div class="review-card" id="reviewCard">
-                <!-- Filled by JavaScript -->
-            </div>
-            
-            <div class="form-group">
-                <label>📧 Contact Email (Optional)</label>
-                <input type="email" id="contactEmail" placeholder="For important updates about your server">
-            </div>
-            
-            <div class="form-group">
-                <label>✅ Agreement</label>
-                <label style="display: flex; align-items: center; gap: 0.8rem; cursor: pointer;">
-                    <input type="checkbox" id="agreeTerms" style="width: auto;">
-                    I confirm that I own this server and agree to the terms of service
-                </label>
-            </div>
-            
-            <div class="button-group">
-                <button class="btn btn-secondary" onclick="prevStep(2)">← Previous</button>
-                <button class="btn btn-primary" onclick="submitSetup()">🚀 Launch Server →</button>
-            </div>
-        </div>
-    </div>
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background: radial-gradient(circle at 30% 20%, #1a1a3a 0%, transparent 60%),
+                radial-gradient(circle at 70% 70%, #0f0f2e 0%, transparent 65%),
+                radial-gradient(circle at 50% 80%, #02020a 0%, var(--bg-dark) 80%);
+}
 
-    <!-- Loading Overlay -->
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="spinner"></div>
-    </div>
-<script src="setup.js"></script>
-</body>
-</html>
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+    opacity: 0.35;
+    mix-blend-mode: screen;
+}
+
+/* Setup Container */
+.setup-container {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: var(--space-2xl) var(--space-lg) var(--space-3xl);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Progress Bar */
+.progress-wrapper {
+    margin-bottom: var(--space-3xl);
+    position: relative;
+}
+
+.progress-steps {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--space-md);
+    position: relative;
+    z-index: 2;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: var(--font-sm);
+    color: #888;
+    transition: all 0.4s ease;
+}
+
+.step.active {
+    color: var(--aura-cyan);
+}
+
+.step.completed {
+    color: var(--success);
+}
+
+.step-number {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: var(--glass);
+    border: 0.125rem solid var(--glass-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+.step.active .step-number {
+    border-color: var(--aura-cyan);
+    background: rgba(0, 210, 255, 0.15);
+    box-shadow: 0 0 1.25rem rgba(0, 210, 255, 0.3);
+}
+
+.step.completed .step-number {
+    border-color: var(--success);
+    background: rgba(0, 255, 136, 0.15);
+}
+
+.progress-bar-bg {
+    position: absolute;
+    top: 1.25rem;
+    left: 0;
+    right: 0;
+    height: 0.125rem;
+    background: var(--glass-border);
+    z-index: 1;
+}
+
+.progress-bar-fill {
+    position: absolute;
+    top: 1.25rem;
+    left: 0;
+    height: 0.125rem;
+    background: linear-gradient(90deg, var(--aura-purple), var(--aura-cyan));
+    width: 0%;
+    transition: width 0.5s ease;
+    z-index: 2;
+}
+
+/* Form Sections */
+.form-section {
+    background: var(--glass);
+    border: 0.0625rem solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-2xl);
+    backdrop-filter: blur(20px);
+    margin-bottom: var(--space-xl);
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(1.25rem); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.section-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: var(--font-2xl);
+    margin-bottom: var(--space-sm);
+    background: linear-gradient(135deg, #fff, var(--aura-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.section-subtitle {
+    color: #a0a0c0;
+    margin-bottom: var(--space-xl);
+    font-size: var(--font-sm);
+}
+
+/* Form Groups */
+.form-group {
+    margin-bottom: var(--space-xl);
+}
+
+label {
+    display: block;
+    margin-bottom: var(--space-sm);
+    font-weight: 600;
+    color: #d0d0e0;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: var(--space-md);
+    background: rgba(0, 0, 0, 0.4);
+    border: 0.0625rem solid var(--glass-border);
+    border-radius: var(--radius-md);
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-size: var(--font-base);
+    transition: all 0.3s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--aura-purple);
+    box-shadow: 0 0 0.9375rem rgba(125, 95, 255, 0.2);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 6.25rem;
+}
+
+/* Server Type Options */
+.server-type-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
+    gap: var(--space-md);
+    margin-top: var(--space-sm);
+}
+
+.server-option {
+    background: rgba(0, 0, 0, 0.3);
+    border: 0.0625rem solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.server-option:hover {
+    border-color: var(--aura-purple);
+    transform: translateY(-0.1875rem);
+}
+
+.server-option.selected {
+    border-color: var(--aura-cyan);
+    background: rgba(0, 210, 255, 0.1);
+    box-shadow: 0 0 1.25rem rgba(0, 210, 255, 0.2);
+}
+
+.server-option .emoji {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: var(--space-sm);
+}
+
+.server-option .name {
+    font-weight: 700;
+    margin-bottom: var(--space-xs);
+}
+
+.server-option .desc {
+    font-size: var(--font-xs);
+    color: #a0a0c0;
+}
+
+/* Premium Pricing Cards */
+.pricing-container {
+    display: flex;
+    gap: var(--space-xl);
+    justify-content: center;
+    margin-bottom: var(--space-2xl);
+    flex-wrap: wrap;
+}
+
+.pricing-card {
+    flex: 1;
+    min-width: 15rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+    border: 0.0625rem solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-xl);
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    backdrop-filter: blur(10px);
+}
+
+.pricing-card:hover {
+    transform: translateY(-0.5rem);
+    border-color: var(--aura-purple);
+    box-shadow: 0 1.25rem 2.5rem rgba(125, 95, 255, 0.2);
+}
+
+.pricing-card.premium {
+    background: linear-gradient(135deg, rgba(125, 95, 255, 0.15), rgba(0, 210, 255, 0.08));
+    border: 0.125rem solid transparent;
+    background-clip: padding-box;
+    position: relative;
+}
+
+.pricing-card.premium::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-xl);
+    padding: 0.125rem;
+    background: linear-gradient(135deg, var(--aura-purple), var(--aura-cyan), var(--aura-gold));
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+.pricing-card.premium .badge {
+    position: absolute;
+    top: -0.75rem;
+    right: 1.25rem;
+    background: linear-gradient(135deg, var(--aura-purple), var(--aura-cyan));
+    padding: var(--space-xs) var(--space-md);
+    border-radius: var(--radius-full);
+    font-size: var(--font-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.125rem;
+    color: white;
+    box-shadow: 0 0 0.625rem rgba(125, 95, 255, 0.5);
+}
+
+.pricing-card h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: var(--font-xl);
+    margin-bottom: var(--space-md);
+    background: linear-gradient(135deg, #fff, var(--aura-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.pricing-card.premium h3 {
+    background: linear-gradient(135deg, var(--aura-gold), var(--aura-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.pricing-card .price {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: var(--space-lg);
+    color: var(--aura-cyan);
+    font-family: 'Orbitron', sans-serif;
+}
+
+.pricing-card.premium .price {
+    color: var(--aura-gold);
+    text-shadow: 0 0 0.625rem rgba(255, 215, 0, 0.3);
+}
+
+.pricing-card .price span {
+    font-size: var(--font-base);
+    font-weight: 400;
+    color: #a0a0c0;
+}
+
+.pricing-card ul {
+    list-style: none;
+    text-align: left;
+    margin-bottom: var(--space-xl);
+}
+
+.pricing-card ul li {
+    padding: var(--space-sm) 0;
+    color: #d0d0e0;
+    font-size: var(--font-sm);
+    border-bottom: 0.0625rem solid var(--glass-border);
+}
+
+.pricing-card ul li:last-child {
+    border-bottom: none;
+}
+
+.pricing-card input[type="radio"] {
+    display: none;
+}
+
+.pricing-card .btn-select {
+    display: inline-block;
+    width: 100%;
+    padding: var(--space-md);
+    background: var(--glass);
+    border: 0.0625rem solid var(--glass-border);
+    border-radius: var(--radius-full);
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    font-size: var(--font-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.0625rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.pricing-card input[type="radio"]:checked + .btn-select {
+    background: linear-gradient(135deg, var(--aura-purple), var(--aura-cyan));
+    border-color: transparent;
+    box-shadow: 0 0 0.9375rem rgba(125, 95, 255, 0.4);
+}
+
+.pricing-card.premium .btn-select:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 1.25rem rgba(125, 95, 255, 0.3);
+}
+
+/* Extras Section */
+.extras-section {
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-xl);
+    border-top: 0.0625rem solid var(--glass-border);
+}
+
+.extras-section h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: var(--font-lg);
+    margin-bottom: var(--space-lg);
+    color: var(--aura-cyan);
+}
+
+.extras-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
+    gap: var(--space-md);
+}
+
+.extra-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    background: rgba(0, 0, 0, 0.3);
+    border: 0.0625rem solid var(--glass-border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.extra-item:hover {
+    border-color: var(--aura-purple);
+    background: rgba(125, 95, 255, 0.1);
+}
+
+.extra-item input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.extra-item span {
+    font-size: var(--font-sm);
+    color: #d0d0e0;
+}
+
+/* Buttons */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+}
+
+.btn {
+    padding: var(--space-md) var(--space-xl);
+    border-radius: var(--radius-full);
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    font-size: var(--font-sm);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    background: var(--glass);
+    border: 0.0625rem solid var(--glass-border);
+    color: white;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--aura-purple), var(--aura-cyan));
+    border: none;
+    box-shadow: 0 0 1.25rem rgba(125, 95, 255, 0.3);
+}
+
+.btn-primary:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 2.1875rem rgba(125, 95, 255, 0.5);
+}
+
+.btn-secondary:hover {
+    border-color: var(--aura-purple);
+    transform: scale(1.02);
+}
+
+/* Review Section */
+.review-card {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-md);
+}
+
+.review-item {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--space-md) 0;
+    border-bottom: 0.0625rem solid var(--glass-border);
+}
+
+.review-label {
+    font-weight: 600;
+    color: var(--aura-cyan);
+}
+
+.review-value {
+    color: #d0d0e0;
+}
+
+/* Loading Overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(2, 2, 5, 0.95);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.loading-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.spinner {
+    width: 3.75rem;
+    height: 3.75rem;
+    border: 0.1875rem solid var(--glass-border);
+    border-top-color: var(--aura-purple);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Success Message */
+.success-message {
+    text-align: center;
+    padding: var(--space-xl);
+}
+
+.success-message .emoji {
+    font-size: 4rem;
+    margin-bottom: var(--space-md);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .setup-container {
+        padding: var(--space-lg);
+    }
+    
+    .form-section {
+        padding: var(--space-lg);
+    }
+    
+    .pricing-container {
+        flex-direction: column;
+        gap: var(--space-lg);
+    }
+    
+    .pricing-card {
+        min-width: auto;
+    }
+    
+    .server-type-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .step-text {
+        display: none;
+    }
+    
+    .button-group {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .server-type-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .review-item {
+        flex-direction: column;
+        gap: var(--space-xs);
+    }
+    
+    .section-title {
+        font-size: var(--font-xl);
+    }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 0.5rem;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--glass);
+    border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--aura-purple);
+    border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--aura-cyan);
+}
+
+/* Animations for premium cards */
+@keyframes premiumGlow {
+    0%, 100% {
+        box-shadow: 0 0 1.25rem rgba(125, 95, 255, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 2.5rem rgba(125, 95, 255, 0.4);
+    }
+}
+
+.pricing-card.premium {
+    animation: premiumGlow 3s ease-in-out infinite;
+}
