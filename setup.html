@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura universe - Server setup</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style-setup.css?v=1.1">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="Images/aura_universe_logo.png">
+</head>
+<body>
+    <div class="setup-container">
+        <!-- Progress Bar -->
+        <div class="progress-wrapper">
+            <div class="progress-steps">
+                <div class="step" data-step="1" id="step1">
+                    <div class="step-number">1</div>
+                    <span class="step-text">Server Identity</span>
+                </div>
+                <div class="step" data-step="2" id="step2">
+                    <div class="step-number">2</div>
+                    <span class="step-text">Server Type</span>
+                </div>
+                <div class="step" data-step="3" id="step3">
+                    <div class="step-number">3</div>
+                    <span class="step-text">Finalize</span>
+                </div>
+            </div>
+            <div class="progress-bar-bg"></div>
+            <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+
+        <!-- Form Sections -->
+        <div id="section1" class="form-section">
+            <h2 class="section-title">Server Identity</h2>
+            <p class="section-subtitle">Define your server's unique presence</p>
+            
+            <div class="form-group">
+                <label>🏷️ Server Name</label>
+                <input type="text" id="serverName" placeholder="e.g., Mystic Realms, Cyber Haven, Fantasy Odyssey" maxlength="100">
+            </div>
+            
+            <div class="form-group">
+                <label>📝 Server Description</label>
+                <textarea id="serverDesc" placeholder="Tell us about your server... What makes it special? What's the vibe?"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>🏷️ Custom Invite Code (Optional)</label>
+                <input type="text" id="inviteCode" placeholder="e.g., mystichaven, cyberrealm" maxlength="20">
+            </div>
+            
+            <div class="button-group">
+                <button class="btn btn-secondary" disabled style="opacity:0.5">Previous</button>
+                <button class="btn btn-primary" onclick="nextStep(2)">Next →</button>
+            </div>
+        </div>
+
+        <div id="section2" class="form-section" style="display: none;">
+            <h2 class="section-title">Server Type</h2>
+            <p class="section-subtitle">Choose what kind of community you're building</p>
+            
+            <div class="form-group">
+                <label>🎮 Server Category</label>
+                <div class="server-type-grid" id="serverTypeGrid">
+                    <div class="server-option" data-type="gaming">
+                        <span class="emoji">🎮</span>
+                        <div class="name">Gaming</div>
+                        <div class="desc">Multiplayer games, clans, tournaments</div>
+                    </div>
+                    <div class="server-option" data-type="anime">
+                        <span class="emoji">🎭</span>
+                        <div class="name">Anime</div>
+                        <div class="desc">Waifu wars, manga, cosplay, watch parties</div>
+                    </div>
+                    <div class="server-option" data-type="community">
+                        <span class="emoji">🌍</span>
+                        <div class="name">Community</div>
+                        <div class="desc">Social hub, events, general chat</div>
+                    </div>
+                    <div class="server-option" data-type="roleplay">
+                        <span class="emoji">📖</span>
+                        <div class="name">Roleplay</div>
+                        <div class="desc">Story-driven, character creation, lore</div>
+                    </div>
+                    <div class="server-option" data-type="creative">
+                        <span class="emoji">🎨</span>
+                        <div class="name">Creative</div>
+                        <div class="desc">Art, music, writing, content creation</div>
+                    </div>
+                    <div class="server-option" data-type="tech">
+                        <span class="emoji">💻</span>
+                        <div class="name">Tech</div>
+                        <div class="desc">Coding, development, AI, crypto</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>🎯 Server Size Goal</label>
+                <select id="serverSize">
+                    <option value="small">🌱 Small (Under 100 members)</option>
+                    <option value="medium">🌿 Medium (100-500 members)</option>
+                    <option value="large">🔥 Large (500-2000 members)</option>
+                    <option value="huge">💀 Huge (2000+ members)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>🌟 Invite Link (Discord)</label>
+                <input type="url" id="discordInvite" placeholder="https://discord.gg/yourinvite">
+            </div>
+            
+            <div class="button-group">
+                <button class="btn btn-secondary" onclick="prevStep(1)">← Previous</button>
+                <button class="btn btn-primary" onclick="nextStep(3)">Next →</button>
+            </div>
+        </div>
+
+        <div id="section3" class="form-section" style="display: none;">
+            <h2 class="section-title">Review & Finalize</h2>
+            <p class="section-subtitle">Review your server details before submission</p>
+            
+            <div class="review-card" id="reviewCard">
+                <!-- Filled by JavaScript -->
+            </div>
+            
+            <div class="form-group">
+                <label>📧 Contact Email (Optional)</label>
+                <input type="email" id="contactEmail" placeholder="For important updates about your server">
+            </div>
+            
+            <div class="form-group">
+                <label>✅ Agreement</label>
+                <label style="display: flex; align-items: center; gap: 0.8rem; cursor: pointer;">
+                    <input type="checkbox" id="agreeTerms" style="width: auto;">
+                    I confirm that I own this server and agree to the terms of service
+                </label>
+            </div>
+            
+            <div class="button-group">
+                <button class="btn btn-secondary" onclick="prevStep(2)">← Previous</button>
+                <button class="btn btn-primary" onclick="submitSetup()">🚀 Launch Server →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+<script src="setup.js"></script>
+</body>
+</html>
