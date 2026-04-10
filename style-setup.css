@@ -184,9 +184,14 @@ body::after {
     backdrop-filter: blur(20px);
     margin-bottom: var(--space-xl);
     
-    /* FIX: Add 'forwards' and set default opacity to 0 */
-    opacity: 0; 
-    animation: fadeIn 0.5s ease forwards; 
+    /* REMOVE the opacity: 0 and animation from here */
+    display: none; 
+}
+
+/* Create a new class for the active section */
+.form-section.active {
+    display: block;
+    animation: fadeIn 0.5s ease forwards;
 }
 
 @keyframes fadeIn {
