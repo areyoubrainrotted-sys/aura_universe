@@ -51,8 +51,8 @@ function nextStep(step) {
     }
 
     // Move to next section
-    document.getElementById(`section${currentStep}`).style.display = 'none';
-    document.getElementById(`section${step}`).style.display = 'block';
+    document.querySelectorAll('.form-section').forEach(sec => sec.classList.remove('active'));
+    document.getElementById(`section${step}`).classList.add('active');
     
     currentStep = step;
     updateProgressBar(step);
@@ -60,8 +60,8 @@ function nextStep(step) {
 }
 
 function prevStep(step) {
-    document.getElementById(`section${currentStep}`).style.display = 'none';
-    document.getElementById(`section${step}`).style.display = 'block';
+    document.querySelectorAll('.form-section').forEach(sec => sec.classList.remove('active'));
+    document.getElementById(`section${step}`).classList.add('active');
     
     currentStep = step;
     updateProgressBar(step);
