@@ -1,29 +1,62 @@
 // 1. TRACKING STATE
 let currentStep = 1;
-let selectedCategory = "community"; // Default
+let selectedCategory = null; // Set to null to force selection
 
 // 2. CATEGORY SELECTION LOGIC
-// This handles clicking those "Gaming", "Tech", "Anime" boxes
 document.querySelectorAll('.server-option').forEach(option => {
     option.addEventListener('click', () => {
-        // Remove 'active' class from all boxes
-        document.querySelectorAll('.server-option').forEach(opt => opt.style.border = "1px solid #ddd");
+        // Remove 'selected' class and reset borders for all
+        document.querySelectorAll('.server-option').forEach(opt => {
+            opt.classList.remove('selected');
+            opt.style.border = "1px solid var(--glass-border)";
+        });
         
         // Add highlight to the one we clicked
-        option.style.border = "2px solid #007bff";
+        option.classList.add('selected');
+        option.style.border = "2px solid var(--aura-cyan)";
         selectedCategory = option.getAttribute('data-type');
     });
 });
 
-// 3. NAVIGATION LOGIC
+// 3. NAVIGATION LOGIC (With Compulsory Validation)
 function nextStep(step) {
-    // Hide current section
+    // VALIDATION FOR STEP 1
+    if (currentStep === 1) {
+        const name = document.getElementById('serverName').value.trim();
+        const desc = document.getElementById('serverDesc').value.trim();
+        
+        if (!name) {
+            alert("⚠️ Please enter a Server Name.");
+            return;
+        }
+        if (!desc) {
+            alert("⚠️ Please provide a Server Description.");
+            return;
+        }
+        if (!selectedCategory) {
+            alert("⚠️ Please select a Server Category.");
+            return;
+        }
+    }
+
+    // VALIDATION FOR STEP 2
+    if (currentStep === 2) {
+        const plan = document.querySelector('input[name="plan"]:checked');
+        if (!plan) {
+            alert("⚠️ Please select a Plan (Free or Premium).");
+            return;
+        }
+        // If moving to step 3, prepare the summary
+        prepareReview();
+    }
+
+    // Move to next section
     document.getElementById(`section${currentStep}`).style.display = 'none';
-    // Show next section
     document.getElementById(`section${step}`).style.display = 'block';
     
     currentStep = step;
     updateProgressBar(step);
+    window.scrollTo(0, 0); // Scroll to top for mobile users
 }
 
 function prevStep(step) {
@@ -34,26 +67,54 @@ function prevStep(step) {
     updateProgressBar(step);
 }
 
+// 4. PREPARE REVIEW (Fills the Step 3 Card)
+function prepareReview() {
+    const card = document.getElementById('reviewCard');
+    const name = document.getElementById('serverName').value;
+    const plan = document.querySelector('input[name="plan"]:checked').value;
+    
+    card.innerHTML = `
+        <div class="review-item">
+            <span class="review-label">Server Name</span>
+            <span class="review-value">${name}</span>
+        </div>
+        <div class="review-item">
+            <span class="review-label">Category</span>
+            <span class="review-value">${selectedCategory.toUpperCase()}</span>
+        </div>
+        <div class="review-item">
+            <span class="review-label">Selected Plan</span>
+            <span class="review-value" style="color: var(--aura-green)">${plan.toUpperCase()}</span>
+        </div>
+    `;
+}
+
 function updateProgressBar(step) {
     const fill = document.getElementById('progressFill');
     if (fill) {
         fill.style.width = ((step - 1) / 2 * 100) + "%";
     }
+    
+    // Update active class on step bubbles
+    document.querySelectorAll('.step').forEach((el, index) => {
+        if (index + 1 <= step) el.classList.add('active');
+        else el.classList.remove('active');
+    });
 }
 
-// 4. SUBMISSION LOGIC (The Bridge to Python/Supabase)
+// 5. SUBMISSION LOGIC
 async function submitSetup() {
-    // Basic Validation
     const agree = document.getElementById('agreeTerms').checked;
     if (!agree) {
-        alert("You must agree to the terms before launching!");
+        alert("❌ You must agree to the terms before launching!");
         return;
     }
 
-    // Show your loading spinner
-    document.getElementById('loadingOverlay').style.display = 'flex';
+    // Toggle loading overlay
+    const loader = document.getElementById('loadingOverlay');
+    loader.classList.add('active');
+    loader.style.display = 'flex';
 
-    // Gather all the data from your HTML inputs
     const setupData = {
         serverName: document.getElementById('serverName').value,
         serverDesc: document.getElementById('serverDesc').value,
@@ -61,13 +122,11 @@ async function submitSetup() {
         category: selectedCategory,
         serverSize: document.getElementById('serverSize').value,
         plan: document.querySelector('input[name="plan"]:checked').value,
-        // Get all checked boxes for extras
         extras: Array.from(document.querySelectorAll('input[name="feature"]:checked')).map(cb => cb.value),
         email: document.getElementById('contactEmail').value
     };
 
     try {
-        // CHANGE THIS URL to your Codespaces Forwarded Address later!
         const response = await fetch('http://127.0.0.1:5000/launch-server', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -77,15 +136,16 @@ async function submitSetup() {
         const result = await response.json();
 
         if (result.status === "success") {
-            alert("Success! Aura Universe is initializing your server.");
-            window.location.href = "index.html"; // Go back home
+            alert("🚀 CORE INITIALIZED! Welcome to the Universe.");
+            window.location.href = "index.html";
         } else {
             alert("Error: " + result.message);
         }
     } catch (error) {
         console.error("Connection failed:", error);
-        alert("Could not connect to the Aura Backend. Make sure app.py is running!");
+        alert("Backend connection failed. Is your Python app running?");
     } finally {
-        document.getElementById('loadingOverlay').style.display = 'none';
+        loader.classList.remove('active');
+        loader.style.display = 'none';
     }
 }
