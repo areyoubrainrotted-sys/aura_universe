@@ -31,11 +31,6 @@ function nextStep(step) {
     }
     // Validation for Step 2
     if (window.currentStep === 2) {
-        const plan = document.querySelector('input[name="plan"]:checked');
-        if (!plan) {
-            alert("⚠️ Please select a plan.");
-            return;
-        }
         prepareReview();
     }
 
@@ -162,5 +157,21 @@ async function submitSetup() {
     } finally {
         loader.classList.remove('active');
         loader.style.display = 'none';
+    }
+}
+
+function notifyMe() {
+    const email = prompt("Enter your email to get notified when Premium launches:", "");
+    if (email && email.includes('@')) {
+        let notifyList = JSON.parse(localStorage.getItem('premium_notify') || '[]');
+        if (!notifyList.includes(email)) {
+            notifyList.push(email);
+            localStorage.setItem('premium_notify', JSON.stringify(notifyList));
+            alert("✅ You'll be notified when Premium launches!");
+        } else {
+            alert("📧 You're already on the waitlist!");
+        }
+    } else if (email) {
+        alert("❌ Please enter a valid email address.");
     }
 }
