@@ -20,51 +20,51 @@ document.querySelectorAll('.server-option').forEach(option => {
 
 // 3. NAVIGATION LOGIC (With Compulsory Validation)
 function nextStep(step) {
-    // VALIDATION FOR STEP 1
+    // 1. VALIDATION (Keep your existing validation logic here)
     if (currentStep === 1) {
         const name = document.getElementById('serverName').value.trim();
         const desc = document.getElementById('serverDesc').value.trim();
-        
-        if (!name) {
-            alert("⚠️ Please enter a Server Name.");
-            return;
-        }
-        if (!desc) {
-            alert("⚠️ Please provide a Server Description.");
-            return;
-        }
-        if (!selectedCategory) {
-            alert("⚠️ Please select a Server Category.");
+        if (!name || !desc || !selectedCategory) {
+            alert("⚠️ Please fill in all fields and select a category.");
             return;
         }
     }
-
-    // VALIDATION FOR STEP 2
     if (currentStep === 2) {
         const plan = document.querySelector('input[name="plan"]:checked');
         if (!plan) {
-            alert("⚠️ Please select a Plan (Free or Premium).");
+            alert("⚠️ Please select a Plan.");
             return;
         }
-        // If moving to step 3, prepare the summary
         prepareReview();
     }
 
-    // Move to next section
-    document.querySelectorAll('.form-section').forEach(sec => sec.classList.remove('active'));
-    document.getElementById(`section${step}`).classList.add('active');
-    
-    currentStep = step;
-    updateProgressBar(step);
-    window.scrollTo(0, 0); // Scroll to top for mobile users
+    // 2. SWITCHING LOGIC
+    // Remove 'active' from all sections
+    document.querySelectorAll('.form-section').forEach(sec => {
+        sec.classList.remove('active');
+    });
+
+    // Add 'active' to the target section
+    const target = document.getElementById(`section${step}`);
+    if (target) {
+        target.classList.add('active');
+        currentStep = step;
+        updateProgressBar(step);
+        window.scrollTo(0, 0);
+    }
 }
 
 function prevStep(step) {
-    document.querySelectorAll('.form-section').forEach(sec => sec.classList.remove('active'));
-    document.getElementById(`section${step}`).classList.add('active');
+    document.querySelectorAll('.form-section').forEach(sec => {
+        sec.classList.remove('active');
+    });
     
-    currentStep = step;
-    updateProgressBar(step);
+    const target = document.getElementById(`section${step}`);
+    if (target) {
+        target.classList.add('active');
+        currentStep = step;
+        updateProgressBar(step);
+    }
 }
 
 // 4. PREPARE REVIEW (Fills the Step 3 Card)
