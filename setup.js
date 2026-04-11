@@ -70,8 +70,17 @@ function prevStep(step) {
 // 4. PREPARE REVIEW (Fills the Step 3 Card)
 function prepareReview() {
     const card = document.getElementById('reviewCard');
-    const name = document.getElementById('serverName').value;
-    const plan = document.querySelector('input[name="plan"]:checked').value;
+    const nameInput = document.getElementById('serverName');
+    const planInput = document.querySelector('input[name="plan"]:checked');
+
+    // Prevent crash if elements are missing
+    if (!card || !nameInput || !planInput) {
+        console.error("Review elements missing!");
+        return; 
+    }
+
+    const name = nameInput.value;
+    const plan = planInput.value;
     
     card.innerHTML = `
         <div class="review-item">
@@ -80,7 +89,7 @@ function prepareReview() {
         </div>
         <div class="review-item">
             <span class="review-label">Category</span>
-            <span class="review-value">${selectedCategory.toUpperCase()}</span>
+            <span class="review-value">${(selectedCategory || 'Not Selected').toUpperCase()}</span>
         </div>
         <div class="review-item">
             <span class="review-label">Selected Plan</span>
