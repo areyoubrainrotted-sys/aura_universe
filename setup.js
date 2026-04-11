@@ -39,18 +39,25 @@ function nextStep(step) {
     }
 
     // 2. SWITCHING LOGIC
-    // Remove 'active' from all sections
+    // 2. Hide everything aggressively
     document.querySelectorAll('.form-section').forEach(sec => {
         sec.classList.remove('active');
+        sec.style.display = 'none'; // Manual override
     });
 
-    // Add 'active' to the target section
+    // 3. Show target aggressively
     const target = document.getElementById(`section${step}`);
     if (target) {
         target.classList.add('active');
+        target.style.display = 'block'; // Manual override
+        
         currentStep = step;
         updateProgressBar(step);
         window.scrollTo(0, 0);
+        
+        console.log("Navigated to Section: " + step); // Check your console for this!
+    } else {
+        console.log("Error: Target id section" + step + " not found!");
     }
 }
 
