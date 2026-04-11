@@ -176,25 +176,28 @@ body::after {
 }
 
 /* Form Sections */
+/* RESET EVERYTHING FOR SECTIONS */
 .form-section {
     background: var(--glass);
-    border: 0.0625rem solid var(--glass-border);
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-xl);
     padding: var(--space-2xl);
     backdrop-filter: blur(20px);
     margin-bottom: var(--space-xl);
-    
-    display: none; /* Keep hidden by default */
-    opacity: 0;    /* Start transparent for the animation */
-    pointer-events: none; /* Prevent clicking hidden elements */
+
+    /* The Force-Hide State */
+    display: none !important; 
+    opacity: 0;
+    visibility: hidden;
 }
 
-/* Force it to show and be opaque when active */
+/* The Force-Show State */
 .form-section.active {
     display: block !important;
     opacity: 1 !important;
-    pointer-events: auto !important;
-    animation: fadeIn 0.5s ease-out forwards;
+    visibility: visible !important;
+    /* Basic fade in without the 'forwards' trap */
+    transition: opacity 0.3s ease; 
 }
 
 @keyframes fadeIn {
