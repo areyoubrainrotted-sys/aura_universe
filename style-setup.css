@@ -184,9 +184,6 @@ body::after {
     padding: var(--space-2xl);
     backdrop-filter: blur(20px);
     margin-bottom: var(--space-xl);
-
-    /* The Force-Hide State */
-    display: none !important; 
     opacity: 0;
     visibility: hidden;
 }
