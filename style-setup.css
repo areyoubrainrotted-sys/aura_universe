@@ -330,6 +330,7 @@ textarea {
     border: 0.125rem solid transparent;
     background-clip: padding-box;
     position: relative;
+    cursor: pointer;
 }
 
 .pricing-card.premium::before {
@@ -346,11 +347,30 @@ textarea {
     pointer-events: none;
 }
 
+/* Temp disabled overlay for premium card */
+.pricing-card.premium.disabled-temp {
+    opacity: 0.85;
+}
+
+.pricing-card.premium.disabled-temp::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: var(--radius-xl);
+    pointer-events: none;
+    backdrop-filter: blur(1px);
+}
+
+/* Coming Soon Badge - Animated */
 .pricing-card.premium .badge {
     position: absolute;
     top: -0.75rem;
     right: 1.25rem;
-    background: linear-gradient(135deg, var(--aura-purple), var(--aura-cyan));
+    background: linear-gradient(135deg, #ff6b6b, #ffa502);
     padding: var(--space-xs) var(--space-md);
     border-radius: var(--radius-full);
     font-size: var(--font-xs);
@@ -358,7 +378,21 @@ textarea {
     text-transform: uppercase;
     letter-spacing: 0.125rem;
     color: white;
-    box-shadow: 0 0 0.625rem rgba(125, 95, 255, 0.5);
+    box-shadow: 0 0 0.625rem rgba(255, 107, 107, 0.5);
+    z-index: 10;
+    white-space: nowrap;
+    animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(255, 107, 107, 0.5);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(255, 107, 107, 0.8);
+        transform: scale(1.05);
+    }
 }
 
 .pricing-card h3 {
@@ -374,6 +408,13 @@ textarea {
     background: linear-gradient(135deg, var(--aura-gold), var(--aura-cyan));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+/* Lock icon on premium title */
+.pricing-card.premium h3::after {
+    content: ' 🔒';
+    font-size: 0.8rem;
+    opacity: 0.6;
 }
 
 .pricing-card .price {
@@ -412,8 +453,99 @@ textarea {
     border-bottom: none;
 }
 
+/* Coming Soon Note Styles */
+.coming-soon-note {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-sm);
+    margin: var(--space-lg) 0;
+    padding: var(--space-sm) var(--space-md);
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: var(--radius-md);
+    font-size: var(--font-sm);
+    flex-wrap: wrap;
+}
+
+.coming-soon-note span:first-child {
+    color: var(--aura-gold);
+    font-weight: 600;
+    font-size: var(--font-xs);
+}
+
+/* Notify Me Button */
+.notify-me {
+    background: rgba(125, 95, 255, 0.2);
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: var(--font-xs);
+    font-weight: 600;
+    border: 1px solid rgba(125, 95, 255, 0.3);
+    white-space: nowrap;
+}
+
+.notify-me:hover {
+    background: linear-gradient(135deg, var(--aura-purple), var(--aura-cyan));
+    transform: scale(1.05);
+    border-color: transparent;
+    box-shadow: 0 0 10px rgba(125, 95, 255, 0.5);
+}
+
+/* Disabled Radio Button Styles */
 .pricing-card input[type="radio"] {
     display: none;
+}
+
+.pricing-card input[type="radio"][disabled] {
+    display: none;
+}
+
+.pricing-card input[type="radio"][disabled] + .btn-select {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    position: relative;
+    overflow: hidden;
+}
+
+.pricing-card input[type="radio"][disabled] + .btn-select::before {
+    content: '🔒';
+    margin-right: 0.5rem;
+    font-size: 0.8rem;
+}
+
+.pricing-card input[type="radio"][disabled] + .btn-select:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+/* Tooltip on hover for disabled button */
+.pricing-card input[type="radio"][disabled] + .btn-select {
+    position: relative;
+}
+
+.pricing-card input[type="radio"][disabled] + .btn-select:hover::after {
+    content: 'Premium will be available when we reach 500+ players!';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: var(--aura-gold);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    font-size: 0.7rem;
+    white-space: nowrap;
+    z-index: 100;
+    margin-bottom: 0.5rem;
+    pointer-events: none;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: normal;
+    text-transform: none;
 }
 
 .pricing-card .btn-select {
@@ -439,9 +571,16 @@ textarea {
     box-shadow: 0 0 0.9375rem rgba(125, 95, 255, 0.4);
 }
 
-.pricing-card.premium .btn-select:hover {
-    transform: scale(1.02);
-    box-shadow: 0 0 1.25rem rgba(125, 95, 255, 0.3);
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .coming-soon-note {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .pricing-card input[type="radio"][disabled] + .btn-select:hover::after {
+        display: none;
+    }
 }
 
 /* Extras Section */
