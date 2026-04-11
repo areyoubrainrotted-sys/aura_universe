@@ -184,14 +184,17 @@ body::after {
     backdrop-filter: blur(20px);
     margin-bottom: var(--space-xl);
     
-    /* REMOVE the opacity: 0 and animation from here */
-    display: none; 
+    display: none; /* Keep hidden by default */
+    opacity: 0;    /* Start transparent for the animation */
+    pointer-events: none; /* Prevent clicking hidden elements */
 }
 
-/* Create a new class for the active section */
+/* Force it to show and be opaque when active */
 .form-section.active {
-    display: block;
-    animation: fadeIn 0.5s ease forwards;
+    display: block !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    animation: fadeIn 0.5s ease-out forwards;
 }
 
 @keyframes fadeIn {
