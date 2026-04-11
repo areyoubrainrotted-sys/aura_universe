@@ -5,8 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aura universe - Server setup</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style-setup.css?v=1.1">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style-setup.css?v=1.2">
   <link rel="icon" type="image/x-icon" href="Images/aura_universe_logo.png">
 </head>
 <body>
@@ -31,7 +30,7 @@
             <div class="progress-bar-fill" id="progressFill"></div>
         </div>
 
-        <!-- Form Sections -->
+        <!-- SECTION 1: Server Identity -->
         <div id="section1" class="form-section active">
             <h2 class="section-title">Server Identity</h2>
             <p class="section-subtitle">Define your server's unique presence</p>
@@ -52,8 +51,8 @@
             </div>
             
             <div class="form-group">
-              <label>🎮 Server Category</label>
-              <div class="server-type-grid" id="serverTypeGrid">
+                <label>🎮 Server Category</label>
+                <div class="server-type-grid" id="serverTypeGrid">
                     <div class="server-option" data-type="gaming">
                         <span class="emoji">🎮</span>
                         <div class="name">Gaming</div>
@@ -84,9 +83,10 @@
                         <div class="name">Tech</div>
                         <div class="desc">Coding, development, AI, crypto</div>
                     </div>
-              </div>
-                  
-                <div class="form-group">
+                </div>
+            </div>
+
+            <div class="form-group">
                 <label>🎯 Server Size Goal</label>
                 <select id="serverSize">
                     <option value="small">🌱 Small (Under 100 members)</option>
@@ -94,60 +94,60 @@
                     <option value="large">🔥 Large (500-2000 members)</option>
                     <option value="huge">💀 Huge (2000+ members)</option>
                 </select>
-                </div>
+            </div>
+
             <div class="button-group">
                 <button class="btn btn-secondary" disabled style="opacity:0.5">Previous</button>
                 <button class="btn btn-primary" onclick="nextStep(2)">Next →</button>
             </div>
         </div>
 
+        <!-- SECTION 2: Features & Plans -->
         <div id="section2" class="form-section">
             <h2 class="section-title">Features and plans</h2>
             <p class="section-subtitle">Choose what kind of plan below fits you</p>
                 
             <div class="pricing-container">
-              <div class="pricing-card">
-                <h3>Free</h3>
-                <div class="price">$0<span>/mo</span></div>
-                <ul>
-                  <li>✅Mode's Basic Tier</li>
-                  <li>✅Particle Roles Access</li>
-                  <li>❌Exclusive Shop</li>
-                </ul>
-                <input type="radio" name="plan" value="free" id="plan-free" checked>
-                <label for="plan-free" class="btn-select">Select Free</label>
-               </div>
-
-              <div class="pricing-card premium">
-              <div class="badge">Popular</div>
-                <h3>Premium</h3>
-                <div class="price">$4.99<span>/mo</span></div>
-                <ul>
-                  <li>Priority Aura Subsidies</li>
-                  <li>Infinite Rod Durability</li>
-                  <li>Expanded Pantry Sync</li>
-                  <li>Custom Company Profiles</li>
-                </ul>
-                <input type="radio" name="plan" value="premium" id="plan-premium">
-                <label for="plan-premium" class="btn-select">Select Premium</label>
+                <div class="pricing-card">
+                    <h3>Free</h3>
+                    <div class="price">$0<span>/mo</span></div>
+                    <ul>
+                        <li>✅ Mode's Basic Tier</li>
+                        <li>✅ Particle Roles Access</li>
+                        <li>❌ Exclusive Shop(required vip purchase for members)</li>
+                    </ul>
+                    <input type="radio" name="plan" value="free" id="plan-free" checked>
+                    <label for="plan-free" class="btn-select">Select Free</label>
                 </div>
-              </div>
 
-          <div class="extras-section">
-            <h3>Add-on Features</h3>
-            <div class="extras-grid">
-              <label class="extra-item">
-                <input type="checkbox" name="feature" value="auto-craft">
-                <span class="checkmark"></span>
-                Welcoming messages
-              </label>
-              <label class="extra-item">
-                <input type="checkbox" name="feature" value="advanced-stats">
-                <span class="checkmark"></span>
-                Birthday system
-              </label>
-             </div>
-           </div>    
+                <div class="pricing-card premium">
+                    <div class="badge">Popular</div>
+                    <h3>Premium</h3>
+                    <div class="price">$4.99<span>/mo</span></div>
+                    <ul>
+                        <li>✅ Mode's Premium Tier</li>
+                        <li>✅ Exclusive item to all your members</li>
+                        <li>✅ Every Roles Access</li>
+                        <li>✅ Exclusive Shop(even basic member can access)</li>
+                    </ul>
+                    <input type="radio" name="plan" value="premium" id="plan-premium">
+                    <label for="plan-premium" class="btn-select">Select Premium</label>
+                </div>
+            </div>
+
+            <div class="extras-section">
+                <h3>Add-on Features</h3>
+                <div class="extras-grid">
+                    <label class="extra-item">
+                        <input type="checkbox" name="feature" value="auto-craft">
+                        <span>Welcoming messages</span>
+                    </label>
+                    <label class="extra-item">
+                        <input type="checkbox" name="feature" value="advanced-stats">
+                        <span>Birthday system</span>
+                    </label>
+                </div>
+            </div>    
             
             <div class="button-group">
                 <button class="btn btn-secondary" onclick="prevStep(1)">← Previous</button>
@@ -155,6 +155,7 @@
             </div>
         </div>
 
+        <!-- SECTION 3: Review & Finalize -->
         <div id="section3" class="form-section">
             <h2 class="section-title">Review & Finalize</h2>
             <p class="section-subtitle">Review your server details before submission</p>
@@ -187,6 +188,7 @@
     <div class="loading-overlay" id="loadingOverlay">
         <div class="spinner"></div>
     </div>
-<script src="setup.js"></script>
+
+    <script src="setup.js"></script>
 </body>
 </html>
