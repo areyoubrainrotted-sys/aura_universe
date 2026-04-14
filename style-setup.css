@@ -826,3 +826,21 @@ textarea {
 .pricing-card.premium {
     animation: premiumGlow 3s ease-in-out infinite;
 }
+
+.learn-more-link {
+    margin-top: var(--space-md);
+    text-align: center;
+}
+
+.learn-more-link a {
+    color: var(--aura-cyan);
+    text-decoration: none;
+    font-size: var(--font-sm);
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.learn-more-link a:hover {
+    color: var(--aura-purple);
+    transform: translateX(5px);
+}
