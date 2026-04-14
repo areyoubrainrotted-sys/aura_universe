@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Center - Aura Universe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style-setup.css">
+    <link rel="icon" type="image/x-icon" href="Images/aura_universe_logo.png">
+    <style>
+        .help-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Hero Section */
+        .help-hero {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: linear-gradient(135deg, rgba(125,95,255,0.1), rgba(0,210,255,0.05));
+            border-radius: 2rem;
+            margin-bottom: 3rem;
+            border: 1px solid var(--glass-border);
+        }
+
+        .help-hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff, var(--aura-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .help-hero p {
+            color: #a0a0c0;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Search Bar */
+        .search-container {
+            max-width: 500px;
+            margin: 2rem auto 0;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--glass-border);
+            border-radius: 9999px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--aura-purple);
+        }
+
+        /* Category Grid */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .category-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--aura-purple);
+            box-shadow: 0 10px 30px rgba(125,95,255,0.2);
+        }
+
+        .category-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .category-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--aura-cyan);
+        }
+
+        .category-desc {
+            font-size: 0.85rem;
+            color: #a0a0c0;
+        }
+
+        /* Content Sections */
+        .content-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .help-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .help-card-header {
+            padding: 1.2rem 1.5rem;
+            background: rgba(125,95,255,0.1);
+            border-bottom: 1px solid var(--glass-border);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .help-card-header h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            color: var(--aura-cyan);
+        }
+
+        .help-card-header .toggle-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .help-card-header.active .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .help-card-body {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .help-card-body.open {
+            padding: 1.5rem;
+            max-height: 500px;
+        }
+
+        .help-card-body img {
+            max-width: 100%;
+            border-radius: 1rem;
+            margin: 1rem 0;
+            border: 1px solid var(--glass-border);
+        }
+
+        .command-list {
+            list-style: none;
+        }
+
+        .command-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .command-code {
+            background: rgba(0,0,0,0.5);
+            padding: 0.2rem 0.6rem;
+            border-radius: 0.5rem;
+            font-family: monospace;
+            color: var(--aura-cyan);
+            font-size: 0.85rem;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.8rem 2rem;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 9999px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            border-color: var(--aura-purple);
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb a {
+            color: var(--aura-cyan);
+            text-decoration: none;
+        }
+
+        .breadcrumb span {
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .help-container {
+                padding: 1rem;
+            }
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="help-container">
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+            <a href="index.html">Home</a>
+            <span>›</span>
+            <a href="setup.html">Setup</a>
+            <span>›</span>
+            <span style="color: var(--aura-cyan);">Help Center</span>
+        </div>
+
+        <!-- Hero Section -->
+        <div class="help-hero">
+            <h1>⚡ Help Center</h1>
+            <p>Everything you need to know about Aura Universe</p>
+            <div class="search-container">
+                <input type="text" class="search-input" id="searchInput" placeholder="🔍 Search help articles...">
+            </div>
+        </div>
+
+        <!-- Category Grid -->
+        <div id="categoryGrid" class="category-grid">
+            <div class="category-card" data-category="getting-started">
+                <div class="category-icon">🚀</div>
+                <div class="category-title">Getting Started</div>
+                <div class="category-desc">Setup, commands, and basics</div>
+            </div>
+            <div class="category-card" data-category="economy">
+                <div class="category-icon">💰</div>
+                <div class="category-title">Economy & Currency</div>
+                <div class="category-desc">Aura, mining, fishing, beachcombing</div>
+            </div>
+            <div class="category-card" data-category="games">
+                <div class="category-icon">🎮</div>
+                <div class="category-title">Mini Games</div>
+                <div class="category-desc">Party games, escape rooms, betting</div>
+            </div>
+            <div class="category-card" data-category="companies">
+                <div class="category-icon">🏢</div>
+                <div class="category-title">Companies</div>
+                <div class="category-desc">Create, manage, and grow your company</div>
+            </div>
+            <div class="category-card" data-category="racing">
+                <div class="category-icon">🏎️</div>
+                <div class="category-title">Car Racing</div>
+                <div class="category-desc">Buy cars, race, and bet</div>
+            </div>
+            <div class="category-card" data-category="premium">
+                <div class="category-icon">⭐</div>
+                <div class="category-title">Premium Features</div>
+                <div class="category-desc">Coming soon - unlock at 500 servers</div>
+            </div>
+        </div>
+
+        <!-- Content Sections -->
+        <div id="getting-started" class="content-section">
+            <h2 class="section-title">🚀 Getting Started</h2>
+            
+            <div class="help-card">
+                <div class="help-card-header" onclick="toggleCard(this)">
+                    <h3>📋 First Time Setup</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="help-card-body">
+                    <img src="Images/setup-guide.png" alt="Setup Guide" onerror="this.style.display='none'">
+                    <p>Follow these steps to get started with Aura Universe:</p>
+                    <ol style="margin-left: 1.5rem; margin-top: 1rem;">
+                        <li>Invite the bot to your server</li>
+                        <li>Use <code class="command-code">!help</code> to see all commands</li>
+                        <li>Start with <code class="command-code">!mine</code> to earn your first aura</li>
+                        <li>Check your balance with <code class="command-code">!balance</code></li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="help-card">
+                <div class="help-card-header" onclick="toggleCard(this)">
+                    <h3>📖 Basic Commands</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="help-card-body">
+                    <ul class="command-list">
+                        <li><span class="command-code">!help</span> - Show all commands</li>
+                        <li><span class="command-code">!balance</span> - Check your aura balance</li>
+                        <li><span class="command-code">!profile</span> - View your profile</li>
+                        <li><span class="command-code">!daily</span> - Claim daily reward</li>
+                        <li><span class="command-code">!leaderboard</span> - View top players</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="economy" class="content-section">
+            <h2 class="section-title">💰 Economy & Currency</h2>
+            
+            <div class="help-card">
+                <div class="help-card-header" onclick="toggleCard(this)">
+                    <h3>⛏️ Mining System</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="help-card-body">
+                    <img src="Images/mining-guide.png" alt="Mining Guide" onerror="this.style.display='none'">
+                    <p>Mine ores to earn aura and level up!</p>
+                    <ul class="command-list">
+                        <li><span class="command-code">!mine</span> - Start mining</li>
+                        <li><span class="command-code">!buy_pickaxe</span> - Upgrade your pickaxe</li>
+                        <li><span class="command-code">!sell_ore</span> - Sell your ores</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="help-card">
+                <div class="help-card-header" onclick="toggleCard(this)">
+                    <h3>🎣 Fishing System</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="help-card-body">
+                    <img src="Images/fishing-guide.png" alt="Fishing Guide" onerror="this.style.display='none'">
+                    <ul class="command-list">
+                        <li><span class="command-code">!fish</span> - Go fishing</li>
+                        <li><span class="command-code">!buy_rod</span> - Get better rods</li>
+                        <li><span class="command-code">!sell_fish</span> - Sell your catch</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="help-card">
+                <div class="help-card-header" onclick="toggleCard(this)">
+                    <h3>🏖️ Beachcombing</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="help-card-body">
+                    <ul class="command-list">
+                        <li><span class="command-code">!beachcomb</span> - Search the beach</li>
+                        <li><span class="command-code">!beach_inventory</span> - View your finds</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="games" class="content-section">
+            <h2 class="section-title">🎮 Mini Games</h2>
+            
+            <div class="help-card">
+                <div class="help-card-header" onclick="toggleCard(this)">
+                    <h3>🏃‍♂️ Escape Rooms</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="help-card-body">
+                    <img src="Images/escape-room.png" alt="Escape Room" onerror="this.style.display='none'">
+                    <p>Work together to solve puzzles and escape!</p>
+                    <ul class="command-list">
+                        <li><span class="command-code">!escape lobby</span> - Create/join a lobby</li>
+                        <li><span class="command-code">!escape themes</span> - See available themes</li>
+                        <li><span class="command-code">!escape start</span> - Start the game</li>
+                        <li><span class="command-code">!escape answer &lt;answer&gt;</span> - Solve puzzles</li>
+                    </ul>
+                    <p><strong>Themes available:</strong> 🏚️ Haunted House, 🚀 Space Station, 🪦 Egypt Tomb, 🧪 Mad Scientist</p>
+                </div>
+            </div>
+
+            <div class="help-card">
+                <div class="help-card-header" onclick="toggleCard(this)">
+                    <h3>🎭 Party Games</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="help-card-body">
+                    <ul class="command-list">
+                        <li><span class="command-code">!mg bomb</span> - Number Bomb (elimination game)</li>
+                        <li><span class="command-code">!mg count</span> - Counting Up (collision game)</li>
+                        <li><span class="command-code">!mg wyr</span> - Would You Rather</li>
+                        <li><span class="command-code">!emojigame</span> - Guess the emoji sentence</li>
+                        <li><span class="command-code">!memescenario</span> - Meme challenge</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="help-card">
+                <div class="help-card-header" onclick="toggleCard(this)">
+                    <h3>🐺 Werewolf Game</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="help-card-body">
+                    <p>Social deduction game for 5-15 players!</p>
+                    <ul class="command-list">
+                        <li><span class="command-code">!ww join</span> - Join the game</li>
+                        <li><span class="command-code">!ww start</span> - Start the game</li>
+                        <li><span class="command-code">!ww vote</span> - Vote to eliminate</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="help-card">
+                <div class="help-card-header" onclick="toggleCard(this)">
+                    <h3>🎰 Casino & Betting</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="help-card-body">
+                    <ul class="command-list">
+                        <li><span class="command-code">!casino</span> - Open casino menu</li>
+                        <li><span class="command-code">!slots &lt;bet&gt;</span> - Play slots</li>
+                        <li><span class="command-code">!wheel &lt;bet&gt;</span> - Spin the wheel</li>
+                        <li><span class="command-code">!roulette &lt;bet&gt;</span> - Play roulette</li>
+                        <li><span class="command-code">!bet @user &lt;amount&gt;</span> - Challenge someone</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="companies" class="content-section">
+            <h2 class="section-title">🏢 Companies</h2>
+            
+            <div class="help-card">
+                <div class="help-card-header" onclick="toggleCard(this)">
+                    <h3>🏭 Creating a Company</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="help-card-body">
+                    <ul class="command-list">
+                        <li><span class="command-code">!createcompany</span> - Start your own company</li>
+                        <li><span class="command-code">!company</span> - View your company profile</li>
+                        <li><span class="command-code">!company_edit</span> - Edit company details</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="help-card">
+                <div class="help-card-header" onclick="toggleCard(this)">
+                    <h3>📦 Selling Items</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="help-card-body">
+                    <ul class="command-list">
+                        <li><span class="command-code">!listsale "item" &lt;price&gt; &lt;quantity&gt;</span> - List items</li>
+                        <li><span class="command-code">!companyshop &lt;company&gt;</span> - Browse shops</li>
+                        <li><span class="command-code">!mysales</span> - View your listings</li>
+                        <li><span class="command-code">!removesale &lt;id&gt;</span> - Remove listing</li>
+                    </ul>
+                    <p><strong>Example:</strong> <code class="command-code">!listsale "Steel Rod" 500 5</code></p>
+                </div>
+            </div>
+        </div>
+
+        <div id="racing" class="content-section">
+            <h2 class="section-title">🏎️ Car Racing</h2>
+            
+            <div class="help-card">
+                <div class="help-card-header" onclick="toggleCard(this)">
+                    <h3>🏁 Getting Started with Racing</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="help-card-body">
+                    <ul class="command-list">
+                        <li><span class="command-code">!setupracingteam</span> - Create your racing team</li>
+                        <li><span class="command-code">!catalog</span> - View available cars</li>
+                        <li><span class="command-code">!buycar &lt;name&gt;</span> - Purchase a car</li>
+                        <li><span class="command-code">!dealership</span> - See daily deals</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="help-card">
+                <div class="help-card-header" onclick="toggleCard(this)">
+                    <h3>🏆 Racing & Betting</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="help-card-body">
+                    <ul class="command-list">
+                        <li><span class="command-code">!createrace</span> - Host a race</li>
+                        <li><span class="command-code">!joinrace</span> - Join a race</li>
+                        <li><span class="command-code">!betonrace</span> - Bet on winners</li>
+                        <li><span class="command-code">!raceresults</span> - View results</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="premium" class="content-section">
+            <h2 class="section-title">⭐ Premium Features</h2>
+            
+            <div class="help-card">
+                <div class="help-card-header" onclick="toggleCard(this)">
+                    <h3>🚀 Premium Unlock Conditions</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="help-card-body">
+                    <p>Premium features will unlock for <strong>EVERYONE</strong> when the bot reaches <strong>500+ servers</strong>!</p>
+                    <div class="progress-bar" style="margin: 1rem 0;">
+                        <div class="progress-fill" style="width: 47%; background: linear-gradient(90deg, var(--aura-purple), var(--aura-cyan));"></div>
+                    </div>
+                    <p>🎯 <strong>Current progress: 247 / 500 servers</strong></p>
+                    <p>Invite the bot to help unlock premium faster!</p>
+                </div>
+            </div>
+
+            <div class="help-card">
+                <div class="help-card-header" onclick="toggleCard(this)">
+                    <h3>✨ Premium Features List</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="help-card-body">
+                    <ul class="command-list">
+                        <li>👑 <strong>Mode's Premium Tier</strong> - Exclusive game modes</li>
+                        <li>🎁 <strong>Exclusive Items</strong> - Special items for all members</li>
+                        <li>🔓 <strong>Every Role Access</strong> - Unlock all role features</li>
+                        <li>🏪 <strong>Exclusive Shop</strong> - Special items for everyone</li>
+                        <li>⚡ <strong>Priority Support</strong> - Faster response times</li>
+                        <li>🚀 <strong>Early Access</strong> - New features first</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back Button -->
+        <a href="setup.html" class="back-btn">← Back to Setup</a>
+    </div>
+
+    <script>
+        // Category navigation
+        document.querySelectorAll('.category-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const category = card.dataset.category;
+                
+                // Hide all content sections
+                document.querySelectorAll('.content-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Show selected section
+                const targetSection = document.getElementById(category);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                }
+                
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // Toggle card expansion
+        function toggleCard(header) {
+            const card = header.closest('.help-card');
+            const body = card.querySelector('.help-card-body');
+            const icon = header.querySelector('.toggle-icon');
+            
+            body.classList.toggle('open');
+            header.classList.toggle('active');
+        }
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            
+            // Search through all help cards
+            document.querySelectorAll('.help-card').forEach(card => {
+                const text = card.innerText.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Show getting started by default
+        document.getElementById('getting-started').classList.add('active');
+    </script>
+</body>
+</html>
