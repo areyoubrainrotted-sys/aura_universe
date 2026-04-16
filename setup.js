@@ -14,7 +14,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 3. INITIAL PROGRESS BAR
+    // 3. Check if returning from Discord OAuth
+    const urlParams = new URLSearchParams(window.location.search);
+    const guildId = urlParams.get('guild_id');
+    if (guildId) {
+        // Successfully added bot to server, complete setup
+        completeServerSetup(guildId);
+    }
+
+    // 4. INITIAL PROGRESS BAR
     updateProgressBar(1);
 });
 
@@ -28,6 +36,12 @@ function nextStep(step) {
             alert("⚠️ Please fill in all fields and select a category.");
             return;
         }
+        // Save server info to localStorage
+        localStorage.setItem('setup_serverName', name);
+        localStorage.setItem('setup_serverDesc', desc);
+        localStorage.setItem('setup_category', window.selectedCategory);
+        localStorage.setItem('setup_serverSize', document.getElementById('serverSize').value);
+        localStorage.setItem('setup_inviteCode', document.getElementById('inviteCode').value);
     }
     // Validation for Step 2
     if (window.currentStep === 2) {
@@ -86,9 +100,16 @@ function updateProgressBar(step) {
 
 function prepareReview() {
     const card = document.getElementById('reviewCard');
-    const name = document.getElementById('serverName').value;
-    const category = window.selectedCategory ? window.selectedCategory.toUpperCase() : 'Not Selected';
-    const plan = document.querySelector('input[name="plan"]:checked')?.value || 'None';
+    const name = localStorage.getItem('setup_serverName') || document.getElementById('serverName').value;
+    const category = window.selectedCategory ? window.selectedCategory.toUpperCase() : (localStorage.getItem('setup_category') || 'Not Selected');
+    const serverSize = localStorage.getItem('setup_serverSize') || document.getElementById('serverSize').value;
+    
+    const sizeNames = {
+        small: '🌱 Small (Under 100 members)',
+        medium: '🌿 Medium (100-500 members)',
+        large: '🔥 Large (500-2000 members)',
+        huge: '💀 Huge (2000+ members)'
+    };
     
     card.innerHTML = `
         <div class="review-item">
@@ -100,8 +121,8 @@ function prepareReview() {
             <span class="review-value">${escapeHtml(category)}</span>
         </div>
         <div class="review-item">
-            <span class="review-label">Selected Plan</span>
-            <span class="review-value" style="color: var(--aura-green)">${escapeHtml(plan)}</span>
+            <span class="review-label">Server Size</span>
+            <span class="review-value">${sizeNames[serverSize] || serverSize}</span>
         </div>
     `;
 }
@@ -116,6 +137,63 @@ function escapeHtml(str) {
     });
 }
 
+// Discord OAuth2 Configuration
+const DISCORD_CLIENT_ID = 'YOUR_CLIENT_ID_HERE'; // Replace with your bot's Client ID
+const DISCORD_REDIRECT_URI = encodeURIComponent(`${window.location.origin}/setup.html`);
+const DISCORD_SCOPES = 'bot applications.commands';
+const DISCORD_PERMISSIONS = '8'; // Administrator permissions (you can adjust this)
+
+function redirectToDiscordInvite() {
+    // Get the server ID from selection or let user choose
+    const inviteUrl = `https://discord.com/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&permissions=${DISCORD_PERMISSIONS}&scope=${DISCORD_SCOPES}&redirect_uri=${DISCORD_REDIRECT_URI}&response_type=code`;
+    window.location.href = inviteUrl;
+}
+
+async function completeServerSetup(guildId) {
+    const loader = document.getElementById('loadingOverlay');
+    loader.classList.add('active');
+    loader.style.display = 'flex';
+
+    const setupData = {
+        serverId: guildId,
+        serverName: localStorage.getItem('setup_serverName') || document.getElementById('serverName')?.value || 'Unknown Server',
+        serverDesc: localStorage.getItem('setup_serverDesc') || document.getElementById('serverDesc')?.value || '',
+        inviteCode: localStorage.getItem('setup_inviteCode') || document.getElementById('inviteCode')?.value || '',
+        category: localStorage.getItem('setup_category') || window.selectedCategory,
+        serverSize: localStorage.getItem('setup_serverSize') || document.getElementById('serverSize')?.value || 'medium',
+        email: document.getElementById('contactEmail')?.value || '',
+        registeredAt: new Date().toISOString()
+    };
+
+    try {
+        const response = await fetch('/api/register-server', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(setupData)
+        });
+        const result = await response.json();
+        if (result.status === "success") {
+            // Clear stored setup data
+            localStorage.removeItem('setup_serverName');
+            localStorage.removeItem('setup_serverDesc');
+            localStorage.removeItem('setup_category');
+            localStorage.removeItem('setup_serverSize');
+            localStorage.removeItem('setup_inviteCode');
+            
+            alert("✅ Server successfully registered! Bot has been added to your server.");
+            window.location.href = "index.html";
+        } else {
+            alert("Error: " + result.message);
+        }
+    } catch (error) {
+        console.error("Registration failed:", error);
+        alert("Failed to register server. Please try again.");
+    } finally {
+        loader.classList.remove('active');
+        loader.style.display = 'none';
+    }
+}
+
 async function submitSetup() {
     const agree = document.getElementById('agreeTerms').checked;
     if (!agree) {
@@ -123,46 +201,30 @@ async function submitSetup() {
         return;
     }
 
-    const loader = document.getElementById('loadingOverlay');
-    loader.classList.add('active');
-    loader.style.display = 'flex';
-
-    const setupData = {
-        serverName: document.getElementById('serverName').value,
-        serverDesc: document.getElementById('serverDesc').value,
-        inviteCode: document.getElementById('inviteCode').value,
-        category: window.selectedCategory,
-        serverSize: document.getElementById('serverSize').value,
-        plan: document.querySelector('input[name="plan"]:checked')?.value,
-        extras: Array.from(document.querySelectorAll('input[name="feature"]:checked')).map(cb => cb.value),
-        email: document.getElementById('contactEmail').value
-    };
-
-    try {
-        const response = await fetch('http://127.0.0.1:5000/launch-server', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(setupData)
-        });
-        const result = await response.json();
-        if (result.status === "success") {
-            alert("🚀 CORE INITIALIZED! Welcome to the Universe.");
-            window.location.href = "index.html";
-        } else {
-            alert("Error: " + result.message);
-        }
-    } catch (error) {
-        console.error("Connection failed:", error);
-        alert("Backend connection failed. Is your Python app running?");
-    } finally {
-        loader.classList.remove('active');
-        loader.style.display = 'none';
+    // Save any remaining data to localStorage
+    localStorage.setItem('setup_serverName', document.getElementById('serverName').value);
+    localStorage.setItem('setup_serverDesc', document.getElementById('serverDesc').value);
+    localStorage.setItem('setup_category', window.selectedCategory);
+    localStorage.setItem('setup_serverSize', document.getElementById('serverSize').value);
+    localStorage.setItem('setup_inviteCode', document.getElementById('inviteCode').value);
+    if (document.getElementById('contactEmail')) {
+        localStorage.setItem('setup_email', document.getElementById('contactEmail').value);
     }
+
+    // Redirect to Discord OAuth for bot invite
+    redirectToDiscordInvite();
 }
 
 function notifyMe() {
     const email = prompt("Enter your email to get notified when Premium launches:", "");
     if (email && email.includes('@')) {
+        // Send to backend
+        fetch('/api/notify-premium', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email })
+        }).catch(console.error);
+        
         let notifyList = JSON.parse(localStorage.getItem('premium_notify') || '[]');
         if (!notifyList.includes(email)) {
             notifyList.push(email);
