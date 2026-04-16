@@ -160,7 +160,8 @@
 
         .help-card-body.open {
             padding: 1.5rem;
-            max-height: 500px;
+            max-height: 600px;
+            overflow-y: auto;
         }
 
         .help-card-body img {
@@ -180,6 +181,7 @@
             display: flex;
             align-items: center;
             gap: 0.8rem;
+            flex-wrap: wrap;
         }
 
         .command-code {
@@ -224,12 +226,29 @@
             color: #666;
         }
 
+        .progress-bar {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            height: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
         @media (max-width: 768px) {
             .help-container {
                 padding: 1rem;
             }
             .category-grid {
                 grid-template-columns: 1fr;
+            }
+            .command-list li {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
     </style>
@@ -286,6 +305,11 @@
                 <div class="category-title">Premium Features</div>
                 <div class="category-desc">Coming soon - unlock at 500 servers</div>
             </div>
+            <div class="category-card" data-category="addons">
+                <div class="category-icon">🎁</div>
+                <div class="category-title">Add-on Features</div>
+                <div class="category-desc">Birthday system, welcome messages, and more</div>
+            </div>
         </div>
 
         <!-- Content Sections -->
@@ -298,12 +322,11 @@
                     <span class="toggle-icon">▼</span>
                 </div>
                 <div class="help-card-body">
-                    <img src="Images/setup-guide.png" alt="Setup Guide" onerror="this.style.display='none'">
                     <p>Follow these steps to get started with Aura Universe:</p>
                     <ol style="margin-left: 1.5rem; margin-top: 1rem;">
-                        <li>Invite the bot to your server using our setup</li>
+                        <li>Invite the bot to your server using our setup page</li>
                         <li>Use <code class="command-code">!bothelp</code> to see all commands</li>
-                        <li>Start your journey by following guide(if your server have one)<li>
+                        <li>Start your journey by following the in-server guide</li>
                     </ol>
                 </div>
             </div>
@@ -318,7 +341,7 @@
                         <li><span class="command-code">!aura</span> - Check your aura balance</li>
                         <li><span class="command-code">!profile</span> - View your profile</li>
                         <li><span class="command-code">!leaderboard</span> - View top players</li>
-                        <li><span class="command-code">!inventory</span> -view your inventory items</li>
+                        <li><span class="command-code">!inventory</span> - View your inventory items</li>
                     </ul>
                 </div>
             </div>
@@ -333,12 +356,11 @@
                     <span class="toggle-icon">▼</span>
                 </div>
                 <div class="help-card-body">
-                    <img src="Images/mining-guide.png" alt="Mining Guide" onerror="this.style.display='none'">
                     <p>Mine ores to earn aura and level up!</p>
                     <ul class="command-list">
                         <li><span class="command-code">!mine</span> - Start mining</li>
-                        <li><span class="command-code">!companyshop &lt;name&gt;</name></span> - Buy and pgrade your pickaxe</li>
-                        <li><span class="command-code">!sell &lt;"name"&lt; &lt;quantity&lt;</span> - Sell your ores</li>
+                        <li><span class="command-code">!companyshop &lt;name&gt;</span> - Buy and upgrade your pickaxe</li>
+                        <li><span class="command-code">!sell &lt;name&gt; &lt;quantity&gt;</span> - Sell your ores</li>
                     </ul>
                 </div>
             </div>
@@ -349,11 +371,10 @@
                     <span class="toggle-icon">▼</span>
                 </div>
                 <div class="help-card-body">
-                    <img src="Images/fishing-guide.png" alt="Fishing Guide" onerror="this.style.display='none'">
                     <ul class="command-list">
                         <li><span class="command-code">!fish</span> - Go fishing</li>
                         <li><span class="command-code">!companyshop &lt;name&gt;</span> - Get better rods</li>
-                        <li><span class="command-code">!sell &lt;"name"&lt; &lt;quantity&lt;</span> - Sell your catch</li>
+                        <li><span class="command-code">!sell &lt;name&gt; &lt;quantity&gt;</span> - Sell your catch</li>
                     </ul>
                 </div>
             </div>
@@ -381,7 +402,6 @@
                     <span class="toggle-icon">▼</span>
                 </div>
                 <div class="help-card-body">
-                    <img src="Images/escape-room.png" alt="Escape Room" onerror="this.style.display='none'">
                     <p>Work together to solve puzzles and escape!</p>
                     <ul class="command-list">
                         <li><span class="command-code">!escape lobby</span> - Create/join a lobby</li>
@@ -545,12 +565,62 @@
             </div>
         </div>
 
+        <div id="addons" class="content-section">
+            <h2 class="section-title">🎁 Add-on Features</h2>
+            
+            <div class="help-card">
+                <div class="help-card-header" onclick="toggleCard(this)">
+                    <h3>👋 Welcome Messages</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="help-card-body">
+                    <p>Automatically welcome new members to your server with customizable messages!</p>
+                    <ul class="command-list">
+                        <li><span class="command-code">!setwelcome #channel</span> - Set welcome channel</li>
+                        <li><span class="command-code">!setwelcomemessage &lt;message&gt;</span> - Customize welcome message</li>
+                        <li><span class="command-code">!togglewelcome</span> - Enable/disable welcome messages</li>
+                    </ul>
+                    <p><strong>Available placeholders:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li><code class="command-code">{user}</code> - Mention the new member</li>
+                        <li><code class="command-code">{server}</code> - Server name</li>
+                        <li><code class="command-code">{member_count}</code> - Server member count</li>
+                    </ul>
+                    <p><strong>Example:</strong> <code class="command-code">!setwelcomemessage Welcome {user} to {server}! You're member #{member_count}</code></p>
+                </div>
+            </div>
+
+            <div class="help-card">
+                <div class="help-card-header" onclick="toggleCard(this)">
+                    <h3>🎂 Birthday System</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="help-card-body">
+                    <p>Celebrate your members' birthdays automatically!</p>
+                    <ul class="command-list">
+                        <li><span class="command-code">!setbirthday MM/DD</span> - Set your birthday</li>
+                        <li><span class="command-code">!viewbirthday @user</span> - View someone's birthday</li>
+                        <li><span class="command-code">!birthdaychannel #channel</span> - Set birthday announcement channel</li>
+                        <li><span class="command-code">!togglebirthday</span> - Enable/disable birthday announcements</li>
+                    </ul>
+                    <p><strong>Features:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>🎉 Automatic birthday announcements</li>
+                        <li>🎁 Special birthday role assignment (if configured)</li>
+                        <li>💰 Bonus aura rewards on birthdays</li>
+                        <li>📅 Birthday calendar for server staff</li>
+                    </ul>
+                    <p><strong>Example:</strong> <code class="command-code">!setbirthday 06/15</code> - Sets your birthday to June 15th</p>
+                </div>
+            </div>
+        </div>
+
         <!-- Back Button -->
         <a href="setup.html" class="back-btn">← Back to Setup</a>
     </div>
 
     <script>
-        // Category navigation
+        // Category navigation - scroll to section
         document.querySelectorAll('.category-card').forEach(card => {
             card.addEventListener('click', () => {
                 const category = card.dataset.category;
@@ -564,10 +634,13 @@
                 const targetSection = document.getElementById(category);
                 if (targetSection) {
                     targetSection.classList.add('active');
+                    
+                    // Scroll to the section smoothly
+                    targetSection.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'start'
+                    });
                 }
-                
-                // Scroll to top
-                window.scrollTo({ black: 'start', behavior: 'smooth' });
             });
         });
 
@@ -583,19 +656,21 @@
 
         // Search functionality
         const searchInput = document.getElementById('searchInput');
-        searchInput.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            
-            // Search through all help cards
-            document.querySelectorAll('.help-card').forEach(card => {
-                const text = card.innerText.toLowerCase();
-                if (text.includes(searchTerm)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                
+                // Search through all help cards
+                document.querySelectorAll('.help-card').forEach(card => {
+                    const text = card.innerText.toLowerCase();
+                    if (text.includes(searchTerm)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
             });
-        });
+        }
 
         // Show getting started by default
         document.getElementById('getting-started').classList.add('active');
