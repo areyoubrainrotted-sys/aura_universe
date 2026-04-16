@@ -472,7 +472,9 @@
                 <div class="help-card-body">
                     <ul class="command-list">
                         <li><span class="command-code">!createcompany</span> - Start your own company</li>
+                        <li><span class="command-code">!delete_my_company</span> - Delete your own company</li>
                         <li><span class="command-code">!company</span> - View your company profile</li>
+                        <li><span class="command-code">!fortune</span> - View fortune 50 companies</li>
                         <li><span class="command-code">!company_edit</span> - Edit company details</li>
                     </ul>
                 </div>
@@ -505,25 +507,21 @@
                 </div>
                 <div class="help-card-body">
                     <ul class="command-list">
-                        <li><span class="command-code">!setupracingteam</span> - Create your racing team</li>
-                        <li><span class="command-code">!catalog</span> - View available cars</li>
-                        <li><span class="command-code">!buycar &lt;name&gt;</span> - Purchase a car</li>
-                        <li><span class="command-code">!dealership</span> - See daily deals</li>
+                        <li><span class="command-code">!garage</span> - View available cars and purchase</li>
+                        <li><span class="command-code">!fleet</span> - View and deploy your cars</li>
                     </ul>
                 </div>
             </div>
 
             <div class="help-card">
                 <div class="help-card-header" onclick="toggleCard(this)">
-                    <h3>🏆 Racing & Betting</h3>
+                    <h3>🏆 Racing</h3>
                     <span class="toggle-icon">▼</span>
                 </div>
                 <div class="help-card-body">
                     <ul class="command-list">
-                        <li><span class="command-code">!createrace</span> - Host a race</li>
-                        <li><span class="command-code">!joinrace</span> - Join a race</li>
-                        <li><span class="command-code">!betonrace</span> - Bet on winners</li>
-                        <li><span class="command-code">!raceresults</span> - View results</li>
+                        <li><span class="command-code">!race setup</span> - Host a race</li>
+                        <li><span class="command-code">!race join</span> - Join a race</li>
                     </ul>
                 </div>
             </div>
@@ -542,7 +540,7 @@
                     <div class="progress-bar" style="margin: 1rem 0;">
                         <div class="progress-fill" style="width: 47%; background: linear-gradient(90deg, var(--aura-purple), var(--aura-cyan));"></div>
                     </div>
-                    <p>🎯 <strong>Current progress: 247 / 500 servers</strong></p>
+                    <p>🎯 <strong>Current progress: 10 / 500 players</strong></p>
                     <p>Invite the bot to help unlock premium faster!</p>
                 </div>
             </div>
@@ -576,9 +574,9 @@
                 <div class="help-card-body">
                     <p>Automatically welcome new members to your server with customizable messages!</p>
                     <ul class="command-list">
-                        <li><span class="command-code">!setwelcome #channel</span> - Set welcome channel</li>
-                        <li><span class="command-code">!setwelcomemessage &lt;message&gt;</span> - Customize welcome message</li>
-                        <li><span class="command-code">!togglewelcome</span> - Enable/disable welcome messages</li>
+                        <li><span class="command-code">1.Get 100 aura join reward</span></li>
+                        <li><span class="command-code">2.View what is the server about</span> - Customizable by filling server description</li>
+                        <li><span class="command-code">3.Complete quests set or default</span> - Customizable by owner</li>
                     </ul>
                     <p><strong>Available placeholders:</strong></p>
                     <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
@@ -598,10 +596,8 @@
                 <div class="help-card-body">
                     <p>Celebrate your members' birthdays automatically!</p>
                     <ul class="command-list">
-                        <li><span class="command-code">!setbirthday MM/DD</span> - Set your birthday</li>
-                        <li><span class="command-code">!viewbirthday @user</span> - View someone's birthday</li>
-                        <li><span class="command-code">!birthdaychannel #channel</span> - Set birthday announcement channel</li>
-                        <li><span class="command-code">!togglebirthday</span> - Enable/disable birthday announcements</li>
+                        <li><span class="command-code">!birthday setup</span> - Set your birthday</li>
+                        <li><span class="command-code">!birthday check</span> - Check your birthday</li>
                     </ul>
                     <p><strong>Features:</strong></p>
                     <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
