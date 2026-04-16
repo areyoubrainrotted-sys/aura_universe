@@ -138,7 +138,7 @@ function escapeHtml(str) {
 }
 
 // Discord OAuth2 Configuration
-const DISCORD_CLIENT_ID = 'YOUR_CLIENT_ID_HERE'; // Replace with your bot's Client ID
+const DISCORD_CLIENT_ID = 'https://discord.com/oauth2/authorize?client_id=1478261487670657177&permissions=8&integration_type=0&scope=bot'; // Replace with your bot's Client ID
 const DISCORD_REDIRECT_URI = encodeURIComponent(`${window.location.origin}/setup.html`);
 const DISCORD_SCOPES = 'bot applications.commands';
 const DISCORD_PERMISSIONS = '8'; // Administrator permissions (you can adjust this)
