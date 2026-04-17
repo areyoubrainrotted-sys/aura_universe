@@ -1,10 +1,13 @@
+// Supabase Configuration (direct from frontend)
+const SUPABASE_URL = 'https://ernuzdqipshbltuvbhtk.supabase.co';  // Replace with your URL
+const SUPABASE_KEY = 'sb_publishable_emybAteRrn7PjZsJ2KV7qw_o3P6npxN';  // Replace with your anon key (safe for frontend)
+
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. TRACKING STATE
     window.currentStep = 1;
     window.selectedCategory = null;
 
-    // 2. CATEGORY SELECTION LOGIC
+    // Category selection
     const categoryOptions = document.querySelectorAll('.server-option');
     categoryOptions.forEach(option => {
         option.addEventListener('click', () => {
@@ -14,16 +17,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 3. Check if returning from Discord OAuth (after bot invite)
+    // Check if returning from Discord OAuth (after bot invite)
     const urlParams = new URLSearchParams(window.location.search);
     const guildId = urlParams.get('guild_id');
     
     if (guildId) {
-        // Bot was successfully added! Now save to database
-        completeServerSetup(guildId);
+        // Bot was added! Save to Supabase
+        saveToSupabase(guildId);
     }
 
-    // 4. INITIAL PROGRESS BAR
     updateProgressBar(1);
 });
 
@@ -36,12 +38,15 @@ function nextStep(step) {
             alert("⚠️ Please fill in all fields and select a category.");
             return;
         }
-        // Save to localStorage temporarily
-        localStorage.setItem('setup_serverName', name);
-        localStorage.setItem('setup_serverDesc', desc);
-        localStorage.setItem('setup_category', window.selectedCategory);
-        localStorage.setItem('setup_serverSize', document.getElementById('serverSize').value);
-        localStorage.setItem('setup_inviteCode', document.getElementById('inviteCode').value);
+        // Save to sessionStorage temporarily
+        sessionStorage.setItem('setup_serverName', name);
+        sessionStorage.setItem('setup_serverDesc', desc);
+        sessionStorage.setItem('setup_category', window.selectedCategory);
+        sessionStorage.setItem('setup_serverSize', document.getElementById('serverSize').value);
+        sessionStorage.setItem('setup_inviteCode', document.getElementById('inviteCode').value);
+        if (document.getElementById('contactEmail')) {
+            sessionStorage.setItem('setup_email', document.getElementById('contactEmail').value);
+        }
     }
     if (window.currentStep === 2) {
         prepareReview();
@@ -94,9 +99,9 @@ function updateProgressBar(step) {
 
 function prepareReview() {
     const card = document.getElementById('reviewCard');
-    const name = localStorage.getItem('setup_serverName') || document.getElementById('serverName')?.value || 'Not set';
-    const category = localStorage.getItem('setup_category') || window.selectedCategory || 'Not selected';
-    const serverSize = localStorage.getItem('setup_serverSize') || document.getElementById('serverSize')?.value || 'medium';
+    const name = sessionStorage.getItem('setup_serverName') || 'Not set';
+    const category = sessionStorage.getItem('setup_category') || 'Not selected';
+    const serverSize = sessionStorage.getItem('setup_serverSize') || 'medium';
     
     const sizeNames = {
         small: '🌱 Small (Under 100 members)',
@@ -133,7 +138,7 @@ function escapeHtml(str) {
 
 // Discord OAuth2 Configuration
 const DISCORD_CLIENT_ID = '1478261487670657177';
-const DISCORD_REDIRECT_URI = encodeURIComponent('https://aurauniverses.github.io/setup.html');
+const DISCORD_REDIRECT_URI = encodeURIComponent(window.location.href.split('?')[0]);
 const DISCORD_SCOPES = 'bot applications.commands';
 const DISCORD_PERMISSIONS = '8';
 
@@ -142,57 +147,54 @@ function redirectToDiscordInvite() {
     window.location.href = inviteUrl;
 }
 
-// Called AFTER bot is added to server (Discord redirects back with guild_id)
-async function completeServerSetup(guildId) {
+// Save to Supabase (direct, no Flask needed)
+async function saveToSupabase(guildId) {
     const loader = document.getElementById('loadingOverlay');
     loader.classList.add('active');
     loader.style.display = 'flex';
 
     const setupData = {
-        guild_id: guildId,  // The actual Discord server ID!
-        server_name: localStorage.getItem('setup_serverName') || 'Unknown Server',
-        description: localStorage.getItem('setup_serverDesc') || '',
-        category: localStorage.getItem('setup_category') || '',
-        server_size: localStorage.getItem('setup_serverSize') || 'medium',
-        invite_code: localStorage.getItem('setup_inviteCode') || '',
-        email: localStorage.getItem('setup_email') || '',
-        registered_at: new Date().toISOString()
+        guild_id: guildId,
+        server_name: sessionStorage.getItem('setup_serverName'),
+        description: sessionStorage.getItem('setup_serverDesc'),
+        category: sessionStorage.getItem('setup_category'),
+        server_size: sessionStorage.getItem('setup_serverSize'),
+        invite_code: sessionStorage.getItem('setup_inviteCode'),
+        contact_email: sessionStorage.getItem('setup_email'),
+        registered_at: new Date().toISOString(),
+        status: 'pending'  // Bot will update to 'active' once configured
     };
 
     try {
-        // Save to your backend/database
-        const response = await fetch('/api/register-server', {
+        // Direct Supabase insert
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/aura_servers`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`
+            },
             body: JSON.stringify(setupData)
         });
-        
-        const result = await response.json();
-        
-        if (result.status === "success") {
-            // Clear temporary storage
-            localStorage.removeItem('setup_serverName');
-            localStorage.removeItem('setup_serverDesc');
-            localStorage.removeItem('setup_category');
-            localStorage.removeItem('setup_serverSize');
-            localStorage.removeItem('setup_inviteCode');
-            localStorage.removeItem('setup_email');
+
+        if (response.ok) {
+            // Clear session storage
+            sessionStorage.removeItem('setup_serverName');
+            sessionStorage.removeItem('setup_serverDesc');
+            sessionStorage.removeItem('setup_category');
+            sessionStorage.removeItem('setup_serverSize');
+            sessionStorage.removeItem('setup_inviteCode');
+            sessionStorage.removeItem('setup_email');
             
-            alert(`✅ Bot successfully added to your server!\n\nServer ID: ${guildId}\nSetup data saved to database.`);
+            alert(`✅ Server registered! Bot will auto-configure your server shortly.\n\nServer ID: ${guildId}`);
             window.location.href = "index.html";
         } else {
-            alert("Error saving to database: " + result.message);
+            const error = await response.json();
+            alert("Error saving to database: " + JSON.stringify(error));
         }
     } catch (error) {
-        console.error("Registration failed:", error);
-        
-        // Fallback: Save to localStorage if backend is not available
-        const allSetups = JSON.parse(localStorage.getItem('registered_servers') || '[]');
-        allSetups.push(setupData);
-        localStorage.setItem('registered_servers', JSON.stringify(allSetups));
-        
-        alert(`✅ Bot added to server! (Saved locally)\nServer ID: ${guildId}\n\nNote: Database connection failed. Data saved to browser localStorage.`);
-        window.location.href = "index.html";
+        console.error("Save error:", error);
+        alert("Failed to save. Please try again.");
     } finally {
         loader.classList.remove('active');
         loader.style.display = 'none';
@@ -207,27 +209,32 @@ async function submitSetup() {
         return;
     }
 
-    // Save form data to localStorage
-    localStorage.setItem('setup_serverName', document.getElementById('serverName').value);
-    localStorage.setItem('setup_serverDesc', document.getElementById('serverDesc').value);
-    localStorage.setItem('setup_category', window.selectedCategory);
-    localStorage.setItem('setup_serverSize', document.getElementById('serverSize').value);
-    localStorage.setItem('setup_inviteCode', document.getElementById('inviteCode').value);
+    // Save to sessionStorage
+    sessionStorage.setItem('setup_serverName', document.getElementById('serverName').value);
+    sessionStorage.setItem('setup_serverDesc', document.getElementById('serverDesc').value);
+    sessionStorage.setItem('setup_category', window.selectedCategory);
+    sessionStorage.setItem('setup_serverSize', document.getElementById('serverSize').value);
+    sessionStorage.setItem('setup_inviteCode', document.getElementById('inviteCode').value);
     if (document.getElementById('contactEmail')) {
-        localStorage.setItem('setup_email', document.getElementById('contactEmail').value);
+        sessionStorage.setItem('setup_email', document.getElementById('contactEmail').value);
     }
 
-    // Redirect to Discord OAuth to add bot
+    // Redirect to Discord to add bot
     redirectToDiscordInvite();
 }
 
 function notifyMe() {
     const email = prompt("Enter your email to get notified when Premium launches:", "");
     if (email && email.includes('@')) {
-        fetch('/api/notify-premium', {
+        // Save to Supabase waitlist
+        fetch(`${SUPABASE_URL}/rest/v1/premium_waitlist`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: email })
+            headers: {
+                'Content-Type': 'application/json',
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`
+            },
+            body: JSON.stringify({ email: email, subscribed_at: new Date().toISOString() })
         }).catch(console.error);
         
         let notifyList = JSON.parse(localStorage.getItem('premium_notify') || '[]');
