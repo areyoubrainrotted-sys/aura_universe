@@ -103,73 +103,226 @@
         </div>
 
         <!-- SECTION 2: Features & Plans -->
-        <div id="section2" class="form-section">
-            <h2 class="section-title">Features and plans</h2>
-            <p class="section-subtitle">Choose what kind of plan below fits you</p>
-                
-            <div class="pricing-container">
-                <div class="pricing-card">
-                    <h3>Free</h3>
-                    <div class="price">$0<span>/mo</span></div>
-                    <ul>
-                        <li>✅ Mode's Basic Tier</li>
-                        <li>✅ Particle Roles Access</li>
-                        <li>❌ Exclusive Shop</li>
-                    </ul>
-                    <input type="radio" name="plan" value="free" id="plan-free" checked>
-                    <label for="plan-free" class="btn-select">Select Free</label>
-                    <div class="learn-more-link">
-                      <a href="help.html#free-server" target="_blank">Learn More →</a>
-                    </div>
-                </div>
-
-                <div class="pricing-card premium disabled-temp">
-                    <div class="badge">Coming Soon</div>
-                    <h3>Premium</h3>
-                    <div class="price">$4.99<span>/mo</span></div>
-                    <ul>
-                        <li>✅ Mode's Premium Tier</li>
-                        <li>✅ Exclusive item to all your members</li>
-                        <li>✅ Every Roles Access</li>
-                        <li>✅ Exclusive Shop(even basic member can access)</li>
-                    </ul>
-                    <div class="coming-soon-note">
-                      <span>🚀 Launching when 500+ players(along with other feature)</span>
-                      <span class="notify-me" onclick="notifyMe()">📧 Notify Me</span>
-                    </div>
-                    <input type="radio" name="plan" value="premium" id="plan-premium" disabled>
-                    <label for="plan-premium" class="btn-select">Select Premium</label>
-                    <div class="learn-more-link">
-                      <a href="help.html#premium-server" target="_blank">Learn More →</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="extras-section">
-                <h3>Add-on Features</h3>
-                <div class="extras-grid">
-                    <label class="extra-item">
-                        <input type="checkbox" name="feature" value="auto-craft">
-                        <span>Welcoming messages</span>
-                    </label>
-                    <div class="learn-more-link">
-                      <a href="help.html#welcoming-system" target="_blank">Learn More →</a>
-                    </div>
-                    <label class="extra-item">
-                        <input type="checkbox" name="feature" value="advanced-stats">
-                        <span>Birthday system</span>
-                    </label>
-                    <div class="learn-more-link">
-                      <a href="help.html#birthday-system" target="_blank">Learn More →</a>
-                    </div>
-                </div>
-            </div>    
-            
-            <div class="button-group">
-                <button class="btn btn-secondary" onclick="prevStep(1)">← Previous</button>
-                <button class="btn btn-primary" onclick="nextStep(3)">Next →</button>
+        <!-- SECTION 2: Features & Plans -->
+<div id="section2" class="form-section">
+    <h2 class="section-title">Features and plans</h2>
+    <p class="section-subtitle">Choose what kind of plan below fits you</p>
+        
+    <div class="pricing-container">
+        <div class="pricing-card">
+            <h3>Free</h3>
+            <div class="price">$0<span>/mo</span></div>
+            <ul>
+                <li>✅ Mode's Basic Tier</li>
+                <li>✅ Particle Roles Access</li>
+                <li>❌ Exclusive Shop</li>
+            </ul>
+            <input type="radio" name="plan" value="free" id="plan-free" checked>
+            <label for="plan-free" class="btn-select">Select Free</label>
+            <div class="learn-more-link">
+              <a href="help.html#free-server" target="_blank">Learn More →</a>
             </div>
         </div>
+
+        <div class="pricing-card premium disabled-temp">
+            <div class="badge">Coming Soon</div>
+            <h3>Premium</h3>
+            <div class="price">$4.99<span>/mo</span></div>
+            <ul>
+                <li>✅ Mode's Premium Tier</li>
+                <li>✅ Exclusive item to all your members</li>
+                <li>✅ Every Roles Access</li>
+                <li>✅ Exclusive Shop(even basic member can access)</li>
+            </ul>
+            <div class="coming-soon-note">
+              <span>🚀 Launching when 500+ players(along with other feature)</span>
+              <span class="notify-me" onclick="notifyMe()">📧 Notify Me</span>
+            </div>
+            <input type="radio" name="plan" value="premium" id="plan-premium" disabled>
+            <label for="plan-premium" class="btn-select">Select Premium</label>
+            <div class="learn-more-link">
+              <a href="help.html#premium-server" target="_blank">Learn More →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quest Configuration -->
+    <div class="config-section">
+        <h3>🎯 Server Quests</h3>
+        <p class="config-desc">Customize the 3 beginner quests for new members</p>
+        
+        <div class="quest-item">
+            <label>📝 Quest 1</label>
+            <input type="text" id="quest1" placeholder="e.g., Say hi in #general → +50 aura" value="Say hi in #general-chat → +50 aura">
+            <button class="btn-config" onclick="openQuestModal(1)">✏️ Edit</button>
+        </div>
+        
+        <div class="quest-item">
+            <label>⛏️ Quest 2</label>
+            <input type="text" id="quest2" placeholder="e.g., Mine, fish, or beachcomb 5 times → +200 aura" value="Mine, fish, or beachcomb 5 times → +200 aura">
+            <button class="btn-config" onclick="openQuestModal(2)">✏️ Edit</button>
+        </div>
+        
+        <div class="quest-item">
+            <label>📋 Quest 3</label>
+            <input type="text" id="quest3" placeholder="e.g., Complete the server survey → +250 aura" value="Complete the server survey with `!survey` → +250 aura">
+            <button class="btn-config" onclick="openQuestModal(3)">✏️ Edit</button>
+        </div>
+        
+        <div class="toggle-item">
+            <label>🔘 Enable Quest System</label>
+            <label class="switch">
+                <input type="checkbox" id="questEnabled" checked>
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+
+    <!-- Survey Configuration -->
+    <div class="config-section">
+        <h3>📋 Server Survey</h3>
+        <p class="config-desc">Customize the welcome survey for new members</p>
+        
+        <div class="survey-config">
+            <div class="survey-header">
+                <span>💰 Survey Reward</span>
+                <input type="number" id="surveyReward" value="250" min="50" max="1000" step="10">
+                <span>aura</span>
+            </div>
+            
+            <div class="survey-questions" id="surveyQuestionsList">
+                <div class="survey-question-item">
+                    <span>1. How did you find this server?</span>
+                    <button class="btn-config-small" onclick="editQuestion(0)">Edit</button>
+                </div>
+                <div class="survey-question-item">
+                    <span>2. What's your favorite feature so far?</span>
+                    <button class="btn-config-small" onclick="editQuestion(1)">Edit</button>
+                </div>
+                <div class="survey-question-item">
+                    <span>3. Any suggestions for improvement?</span>
+                    <button class="btn-config-small" onclick="editQuestion(2)">Edit</button>
+                </div>
+            </div>
+            
+            <button class="btn-add-question" onclick="addQuestion()">+ Add Question</button>
+        </div>
+        
+        <div class="toggle-item">
+            <label>🔘 Enable Survey System</label>
+            <label class="switch">
+                <input type="checkbox" id="surveyEnabled" checked>
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+
+    <div class="extras-section">
+        <h3>Add-on Features</h3>
+        <div class="extras-grid">
+            <label class="extra-item">
+                <input type="checkbox" name="feature" value="auto-craft">
+                <span>Welcoming messages</span>
+            </label>
+            <div class="learn-more-link">
+              <a href="help.html#welcoming-system" target="_blank">Learn More →</a>
+            </div>
+            <label class="extra-item">
+                <input type="checkbox" name="feature" value="advanced-stats">
+                <span>Birthday system</span>
+            </label>
+            <div class="learn-more-link">
+              <a href="help.html#birthday-system" target="_blank">Learn More →</a>
+            </div>
+        </div>
+    </div>    
+    
+    <div class="button-group">
+        <button class="btn btn-secondary" onclick="prevStep(1)">← Previous</button>
+        <button class="btn btn-primary" onclick="nextStep(3)">Next →</button>
+    </div>
+</div>
+
+<!-- Quest Edit Modal -->
+<div id="questModal" class="config-modal">
+    <div class="config-modal-content">
+        <div class="config-modal-header">
+            <h2>Edit Quest</h2>
+            <button class="modal-close" onclick="closeQuestModal()">&times;</button>
+        </div>
+        <div class="config-modal-body">
+            <div class="form-group">
+                <label>🎯 Quest Title</label>
+                <input type="text" id="questTitle" placeholder="e.g., Say hi in #general">
+            </div>
+            <div class="form-group">
+                <label>💰 Reward (aura)</label>
+                <input type="number" id="questReward" value="50" min="10" max="1000">
+            </div>
+            <div class="form-group">
+                <label>📝 Quest Description (optional)</label>
+                <textarea id="questDesc" placeholder="Additional details about this quest..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>✅ Completion Requirement</label>
+                <select id="questRequirement">
+                    <option value="message">Send a message in specific channel</option>
+                    <option value="activity">Complete activities (mine/fish/beach)</option>
+                    <option value="command">Use specific command</option>
+                    <option value="survey">Complete survey</option>
+                </select>
+            </div>
+        </div>
+        <div class="config-modal-footer">
+            <button class="btn-secondary" onclick="closeQuestModal()">Cancel</button>
+            <button class="btn-primary" onclick="saveQuest()">Save Quest</button>
+        </div>
+    </div>
+</div>
+
+<!-- Survey Question Edit Modal -->
+<div id="surveyModal" class="config-modal">
+    <div class="config-modal-content">
+        <div class="config-modal-header">
+            <h2>Edit Survey Question</h2>
+            <button class="modal-close" onclick="closeSurveyModal()">&times;</button>
+        </div>
+        <div class="config-modal-body">
+            <div class="form-group">
+                <label>❓ Question Text</label>
+                <input type="text" id="surveyQuestionText" placeholder="Enter your question">
+            </div>
+            <div class="form-group">
+                <label>💬 Placeholder (optional)</label>
+                <input type="text" id="surveyPlaceholder" placeholder="e.g., Type your answer here...">
+            </div>
+            <div class="form-group">
+                <label>📏 Answer Type</label>
+                <select id="surveyType">
+                    <option value="short">Short Text (one line)</option>
+                    <option value="paragraph">Paragraph (multiple lines)</option>
+                    <option value="number">Number</option>
+                    <option value="select">Multiple Choice</option>
+                </select>
+            </div>
+            <div class="form-group" id="multipleChoiceOptions" style="display:none;">
+                <label>🔘 Options (comma separated)</label>
+                <input type="text" id="surveyOptions" placeholder="Option 1, Option 2, Option 3">
+            </div>
+            <div class="form-group">
+                <label>⭐ Required?</label>
+                <label class="switch" style="display: inline-block;">
+                    <input type="checkbox" id="surveyRequired" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        <div class="config-modal-footer">
+            <button class="btn-secondary" onclick="closeSurveyModal()">Cancel</button>
+            <button class="btn-primary" onclick="saveSurveyQuestion()">Save Question</button>
+        </div>
+    </div>
+</div>
 
         <!-- SECTION 3: Review & Finalize -->
         <div id="section3" class="form-section">
