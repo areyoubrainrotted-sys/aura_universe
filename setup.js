@@ -1,3 +1,10 @@
+let currentQuestNumber = 1;
+let currentQuestionIndex = 0;
+let surveyQuestions = [
+    { text: "How did you find this server?", placeholder: "Friend, Discord discovery, Advertisement, etc.", type: "short", required: true },
+    { text: "What's your favorite feature so far?", placeholder: "Mining, Fishing, Companies, Casino, etc.", type: "short", required: true },
+    { text: "Any suggestions for improvement?", placeholder: "Share your ideas!", type: "paragraph", required: false }
+];
 // Supabase Configuration (direct from frontend)
 const SUPABASE_URL = 'https://ernuzdqipshbltuvbhtk.supabase.co';  // Replace with your URL
 const SUPABASE_KEY = 'sb_publishable_emybAteRrn7PjZsJ2KV7qw_o3P6npxN';  // Replace with your anon key (safe for frontend)
@@ -97,11 +104,127 @@ function updateProgressBar(step) {
     });
 }
 
+function openQuestModal(questNum) {
+    currentQuestNumber = questNum;
+    const questInput = document.getElementById(`quest${questNum}`);
+    const currentText = questInput.value;
+    
+    // Parse existing quest text
+    const match = currentText.match(/(.+?) → \+(\d+) aura/);
+    if (match) {
+        document.getElementById('questTitle').value = match[1];
+        document.getElementById('questReward').value = match[2];
+    } else {
+        document.getElementById('questTitle').value = currentText;
+        document.getElementById('questReward').value = 50;
+    }
+    
+    document.getElementById('questModal').classList.add('active');
+}
+
+function closeQuestModal() {
+    document.getElementById('questModal').classList.remove('active');
+}
+
+function saveQuest() {
+    const title = document.getElementById('questTitle').value;
+    const reward = document.getElementById('questReward').value;
+    const desc = document.getElementById('questDesc').value;
+    
+    const questText = `${title} → +${reward} aura`;
+    document.getElementById(`quest${currentQuestNumber}`).value = questText;
+    
+    closeQuestModal();
+}
+
+// Survey Modal Functions
+function openSurveyModal(index) {
+    currentQuestionIndex = index;
+    const question = surveyQuestions[index];
+    
+    document.getElementById('surveyQuestionText').value = question.text;
+    document.getElementById('surveyPlaceholder').value = question.placeholder || '';
+    document.getElementById('surveyType').value = question.type || 'short';
+    document.getElementById('surveyRequired').checked = question.required !== false;
+    
+    if (question.options) {
+        document.getElementById('surveyOptions').value = question.options.join(', ');
+        document.getElementById('multipleChoiceOptions').style.display = 'block';
+    } else {
+        document.getElementById('multipleChoiceOptions').style.display = 'none';
+    }
+    
+    document.getElementById('surveyModal').classList.add('active');
+}
+
+function closeSurveyModal() {
+    document.getElementById('surveyModal').classList.remove('active');
+}
+
+function saveSurveyQuestion() {
+    const question = {
+        text: document.getElementById('surveyQuestionText').value,
+        placeholder: document.getElementById('surveyPlaceholder').value,
+        type: document.getElementById('surveyType').value,
+        required: document.getElementById('surveyRequired').checked
+    };
+    
+    if (question.type === 'select') {
+        const options = document.getElementById('surveyOptions').value.split(',').map(o => o.trim());
+        question.options = options;
+    }
+    
+    surveyQuestions[currentQuestionIndex] = question;
+    updateSurveyQuestionsList();
+    closeSurveyModal();
+}
+
+function updateSurveyQuestionsList() {
+    const container = document.getElementById('surveyQuestionsList');
+    container.innerHTML = '';
+    
+    surveyQuestions.forEach((q, i) => {
+        const div = document.createElement('div');
+        div.className = 'survey-question-item';
+        div.innerHTML = `
+            <span>${i+1}. ${q.text}</span>
+            <button class="btn-config-small" onclick="openSurveyModal(${i})">Edit</button>
+            <button class="btn-config-small" style="background: #dc3545;" onclick="removeQuestion(${i})">Remove</button>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function addQuestion() {
+    surveyQuestions.push({
+        text: "New Question",
+        placeholder: "Type your answer...",
+        type: "short",
+        required: false
+    });
+    updateSurveyQuestionsList();
+}
+
+function removeQuestion(index) {
+    surveyQuestions.splice(index, 1);
+    updateSurveyQuestionsList();
+}
+
+// Update survey type display
+document.getElementById('surveyType').addEventListener('change', function() {
+    const multipleChoiceDiv = document.getElementById('multipleChoiceOptions');
+    if (this.value === 'select') {
+        multipleChoiceDiv.style.display = 'block';
+    } else {
+        multipleChoiceDiv.style.display = 'none';
+    }
+});
+
 function prepareReview() {
     const card = document.getElementById('reviewCard');
-    const name = sessionStorage.getItem('setup_serverName') || 'Not set';
-    const category = sessionStorage.getItem('setup_category') || 'Not selected';
-    const serverSize = sessionStorage.getItem('setup_serverSize') || 'medium';
+    const name = localStorage.getItem('setup_serverName') || document.getElementById('serverName')?.value || 'Not set';
+    const category = localStorage.getItem('setup_category') || window.selectedCategory || 'Not selected';
+    const serverSize = localStorage.getItem('setup_serverSize') || document.getElementById('serverSize')?.value || 'medium';
     
     const sizeNames = {
         small: '🌱 Small (Under 100 members)',
@@ -109,6 +232,9 @@ function prepareReview() {
         large: '🔥 Large (500-2000 members)',
         huge: '💀 Huge (2000+ members)'
     };
+    
+    const questEnabled = document.getElementById('questEnabled')?.checked ? '✅ Enabled' : '❌ Disabled';
+    const surveyEnabled = document.getElementById('surveyEnabled')?.checked ? '✅ Enabled' : '❌ Disabled';
     
     card.innerHTML = `
         <div class="review-item">
@@ -122,6 +248,14 @@ function prepareReview() {
         <div class="review-item">
             <span class="review-label">Server Size</span>
             <span class="review-value">${sizeNames[serverSize] || serverSize}</span>
+        </div>
+        <div class="review-item">
+            <span class="review-label">Quest System</span>
+            <span class="review-value">${questEnabled}</span>
+        </div>
+        <div class="review-item">
+            <span class="review-label">Survey System</span>
+            <span class="review-value">${surveyEnabled}</span>
         </div>
     `;
 }
@@ -156,6 +290,19 @@ async function saveToSupabase(guildId) {
     const selectedPlan = document.querySelector('input[name="plan"]:checked?.value || 'free')
     const selectedFeatures = Array.from(document.querySelectorAll('input[name="feature"]:checked')).map(cb => cb.value);
 
+    const quests = {
+        quest1: document.getElementById('quest1')?.value,
+        quest2: document.getElementById('quest2')?.value,
+        quest3: document.getElementById('quest3')?.value,
+        quest_enabled: document.getElementById('questEnabled')?.checked ? 1 : 0
+    };
+    
+    const survey = {
+        enabled: document.getElementById('surveyEnabled')?.checked ? 1 : 0,
+        reward: parseInt(document.getElementById('surveyReward')?.value) || 250,
+        questions: surveyQuestions
+    };
+    
     const setupData = {
         guild_id: guildId,
         server_name: sessionStorage.getItem('setup_serverName'),
@@ -166,6 +313,8 @@ async function saveToSupabase(guildId) {
         contact_email: sessionStorage.getItem('setup_email'),
         plan: selectedPlan,
         features:selectedFeatures,
+        quests: quests,
+        survey: survey,
         registered_at: new Date().toISOString(),
         status: 'pending'  // Bot will update to 'active' once configured
     };
