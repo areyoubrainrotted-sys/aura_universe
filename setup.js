@@ -153,6 +153,9 @@ async function saveToSupabase(guildId) {
     loader.classList.add('active');
     loader.style.display = 'flex';
 
+    const selectedPlan = document.querySelector('input[name="plan"]:checked?.value || 'free')
+    const selectedFeatures = Array.from(document.querySelectorAll('input[name="feature"]:checked')).map(cb => cb.value);
+
     const setupData = {
         guild_id: guildId,
         server_name: sessionStorage.getItem('setup_serverName'),
@@ -161,6 +164,8 @@ async function saveToSupabase(guildId) {
         server_size: sessionStorage.getItem('setup_serverSize'),
         invite_code: sessionStorage.getItem('setup_inviteCode'),
         contact_email: sessionStorage.getItem('setup_email'),
+        plan: selectedPlan,
+        features:selectedFeatures,
         registered_at: new Date().toISOString(),
         status: 'pending'  // Bot will update to 'active' once configured
     };
