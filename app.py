@@ -16,28 +16,59 @@ key = os.environ.get("SUPABASE_KEY")
 
 supabase: Client = create_client(url, key)
 
-@app.route('/launch-server', methods=['POST'])
-def launch_server():
+@app.route('/api/register-server', methods=['POST'])
+def register_server():
+    """Register server after bot has been added (with guild_id)"""
     try:
         data = request.json
         
-        # Insert data into your Supabase table
-        # Ensure your column names in Supabase match these keys!
+        # Insert data into Supabase table with guild_id
         response = supabase.table("aura_servers").insert({
-            "server_name": data.get("serverName"),
-            "description": data.get("serverDesc"),
+            "guild_id": data.get("guild_id"),           # Discord server ID
+            "server_name": data.get("server_name"),
+            "description": data.get("description"),
             "category": data.get("category"),
-            "size_goal": data.get("serverSize"),
-            "plan": data.get("plan"),
-            "extras": data.get("extras"),
-            "contact_email": data.get("email")
+            "size_goal": data.get("server_size"),
+            "invite_code": data.get("invite_code"),
+            "contact_email": data.get("email"),
+            "registered_at": data.get("registered_at"),
+            "status": "active"
         }).execute()
 
-        return jsonify({"status": "success", "message": "Aura Core Initialized!"}), 200
+        return jsonify({"status": "success", "message": "Server registered successfully!"}), 200
     except Exception as e:
         print(f"Error: {e}")
         return jsonify({"status": "error", "message": str(e)}), 400
 
+@app.route('/api/notify-premium', methods=['POST'])
+def notify_premium():
+    """Save email for premium notification waitlist"""
+    try:
+        data = request.json
+        email = data.get("email")
+        
+        if not email:
+            return jsonify({"status": "error", "message": "Email required"}), 400
+        
+        response = supabase.table("premium_waitlist").insert({
+            "email": email,
+            "subscribed_at": datetime.now().isoformat()
+        }).execute()
+        
+        return jsonify({"status": "success", "message": "Added to waitlist!"}), 200
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"status": "error", "message": str(e)}), 400
+
+@app.route('/api/server-stats', methods=['GET'])
+def server_stats():
+    """Get total registered servers count"""
+    try:
+        response = supabase.table("aura_servers").select("guild_id", count="exact").execute()
+        count = len(response.data)
+        return jsonify({"status": "success", "total_servers": count}), 200
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 400
+
 if __name__ == '__main__':
-    # Codespaces usually prefers port 5000 or 8080
     app.run(debug=True, port=5000)
