@@ -137,59 +137,50 @@ function saveQuest() {
     closeQuestModal();
 }
 
-// Survey Modal Functions
 function openSurveyModal(index) {
     currentQuestionIndex = index;
     const question = surveyQuestions[index];
-    
-    document.getElementById('surveyQuestionText').value = question.text;
-    document.getElementById('surveyPlaceholder').value = question.placeholder || '';
-    document.getElementById('surveyType').value = question.type || 'short';
-    document.getElementById('surveyRequired').checked = question.required !== false;
-    
-    if (question.options) {
-        document.getElementById('surveyOptions').value = question.options.join(', ');
-        document.getElementById('multipleChoiceOptions').style.display = 'block';
-    } else {
-        document.getElementById('multipleChoiceOptions').style.display = 'none';
+    const modal = document.getElementById('surveyModal');
+
+    if (modal && question) {
+        document.getElementById('surveyQuestionText').value = question.text;
+        document.getElementById('surveyPlaceholder').value = question.placeholder || '';
+        document.getElementById('surveyType').value = question.type || 'short';
+        document.getElementById('surveyRequired').checked = question.required !== false;
+        
+        // Handle Options display
+        const optionsDiv = document.getElementById('multipleChoiceOptions');
+        if (question.type === 'select') {
+            document.getElementById('surveyOptions').value = question.options ? question.options.join(', ') : '';
+            optionsDiv.style.display = 'block';
+        } else {
+            optionsDiv.style.display = 'none';
+        }
+
+        modal.classList.add('active');
     }
-    
-    document.getElementById('surveyModal').classList.add('active');
 }
 
-function closeSurveyModal() {
-    document.getElementById('surveyModal').classList.remove('active');
-}
-
-function saveSurveyQuestion() {
-    const question = {
-        text: document.getElementById('surveyQuestionText').value,
-        placeholder: document.getElementById('surveyPlaceholder').value,
-        type: document.getElementById('surveyType').value,
-        required: document.getElementById('surveyRequired').checked
-    };
-    
-    if (question.type === 'select') {
-        const options = document.getElementById('surveyOptions').value.split(',').map(o => o.trim());
-        question.options = options;
-    }
-    
-    surveyQuestions[currentQuestionIndex] = question;
+// 4. Initial call to populate list on load
+document.addEventListener('DOMContentLoaded', () => {
     updateSurveyQuestionsList();
-    closeSurveyModal();
-}
+});
 
 function updateSurveyQuestionsList() {
     const container = document.getElementById('surveyQuestionsList');
+    if (!container) return;
     container.innerHTML = '';
     
     surveyQuestions.forEach((q, i) => {
         const div = document.createElement('div');
         div.className = 'survey-question-item';
+        // FIXED: Using backticks and proper function calls
         div.innerHTML = `
             <span>${i+1}. ${q.text}</span>
-            <button class="btn-config-small" onclick="openSurveyModal(${i})">Edit</button>
-            <button class="btn-config-small" style="background: #dc3545;" onclick="removeQuestion(${i})">Remove</button>
+            <div class="survey-btns">
+                <button class="btn-config-small" onclick="openSurveyModal(${i})">Edit</button>
+                <button class="btn-config-small" style="background: #dc3545;" onclick="removeQuestion(${i})">Remove</button>
+            </div>
         `;
         container.appendChild(div);
     });
