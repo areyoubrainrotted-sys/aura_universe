@@ -144,77 +144,83 @@
             </div>
         </div>
     </div>
-
     <!-- Quest Configuration -->
-    <div class="config-section">
-        <h3>🎯 Server Quests</h3>
-        <p class="config-desc">Customize the 3 beginner quests for new members</p>
-        
-        <div class="quest-item">
-            <label>📝 Quest 1</label>
-            <input type="text" id="quest1" placeholder="e.g., Say hi in #general → +50 aura" value="Say hi in #general-chat → +50 aura">
-            <button class="btn-config" onclick="openQuestModal(1)">✏️ Edit</button>
-        </div>
-        
-        <div class="quest-item">
-            <label>⛏️ Quest 2</label>
-            <input type="text" id="quest2" placeholder="e.g., Mine, fish, or beachcomb 5 times → +200 aura" value="Mine, fish, or beachcomb 5 times → +200 aura">
-            <button class="btn-config" onclick="openQuestModal(2)">✏️ Edit</button>
-        </div>
-        
-        <div class="quest-item">
-            <label>📋 Quest 3</label>
-            <input type="text" id="quest3" placeholder="e.g., Complete the server survey → +250 aura" value="Complete the server survey with `!survey` → +250 aura">
-            <button class="btn-config" onclick="openQuestModal(3)">✏️ Edit</button>
-        </div>
-        
-        <div class="toggle-item">
-            <label>🔘 Enable Quest System</label>
-            <label class="switch">
-                <input type="checkbox" id="questEnabled" checked>
-                <span class="slider"></span>
-            </label>
-        </div>
+<div class="config-section">
+    <h3>🎯 Server Quests</h3>
+    <p class="config-desc">Customize the 3 beginner quests for new members</p>
+
+    <div class="quest-item">
+        <label>📝 Quest 1</label>
+        <input type="text" id="quest1" placeholder="e.g., Say hi in #general → +50 aura" value="Say hi in #general-chat → +50 aura">
+        <button class="btn-config" onclick="openQuestModal(1)">✏️ Edit</button>
     </div>
 
-    <!-- Survey Configuration -->
-    <div class="config-section">
-        <h3>📋 Server Survey</h3>
-        <p class="config-desc">Customize the welcome survey for new members</p>
-        
-        <div class="survey-config">
-            <div class="survey-header">
-                <span>💰 Survey Reward</span>
-                <input type="number" id="surveyReward" value="250" min="50" max="1000" step="10">
-                <span>aura</span>
-            </div>
-            
-            <div class="survey-questions" id="surveyQuestionsList">
-                <div class="survey-question-item">
-                    <span>1. How did you find this server?</span>
-                    <button class="btn-config-small" onclick="openSurveyModal(${i})">Edit</button>
-                </div>
-                <div class="survey-question-item">
-                    <span>2. What's your favorite feature so far?</span>
-                    <button class="btn-config-small" onclick="openSurveyModal(${i})">Edit</button>
-                </div>
-                <div class="survey-question-item">
-                    <span>3. Any suggestions for improvement?</span>
-                    <button class="btn-config-small" onclick="openSurveyModal(${i})">Edit</button>
-                </div>
-            </div>
-            
-            <button class="btn-add-question" onclick="addQuestion()">+ Add Question</button>
-        </div>
-        
-        <div class="toggle-item">
-            <label>🔘 Enable Survey System</label>
-            <label class="switch">
-                <input type="checkbox" id="surveyEnabled" checked>
-                <span class="slider"></span>
-            </label>
-        </div>
+    <div class="quest-item">
+        <label>⛏️ Quest 2</label>
+        <input type="text" id="quest2" placeholder="e.g., Mine, fish, or beachcomb 5 times → +200 aura" value="Mine, fish, or beachcomb 5 times → +200 aura">
+        <button class="btn-config" onclick="openQuestModal(2)">✏️ Edit</button>
     </div>
+
+    <div class="quest-item">
+        <label>📋 Quest 3</label>
+        <input type="text" id="quest3" placeholder="e.g., Complete the server survey → +250 aura" value="Complete the server survey with `!survey` → +250 aura">
+        <button class="btn-config" onclick="openQuestModal(3)">✏️ Edit</button>
+    </div>
+
+    <div class="toggle-item">
+        <label>🔘 Enable Quest System</label>
+        <label class="switch">
+            <input type="checkbox" id="questEnabled" checked>
+            <span class="slider"></span>
+        </label>
+    </div>
+</div>
+
+<!-- Survey Configuration (VIP LOCKED) -->
+<div class="config-section locked-vip">
+    <!-- VIP Hype Overlay -->
+    <div class="vip-hype-overlay">
+        <div class="badge">VIP Release</div>
+        <p>Customizing surveys is coming with the **VIP Launch**!</p>
+        <span class="notify-me" onclick="notifyMe()">📧 Notify Me</span>
+    </div>
+
+    <h3>📋 Server Survey</h3>
+    <p class="config-desc">Customize the welcome survey for new members</p>
+
+    <div class="survey-config">
+        <div class="survey-header">
+            <span>💰 Survey Reward</span>
+            <input type="number" id="surveyReward" value="250" min="50" max="1000" step="10" disabled>
+            <span>aura</span>
+        </div>
+
+        <div class="survey-questions" id="surveyQuestionsList">
+            <div class="survey-question-item">
+                <span>1. How did you find this server?</span>
+                <button class="btn-config-small" onclick="openSurveyModal(0)" disabled>Edit</button>
+            </div>
+            <div class="survey-question-item">
+                <span>2. What's your favorite feature so far?</span>
+                <button class="btn-config-small" onclick="openSurveyModal(1)" disabled>Edit</button>
+            </div>
+            <div class="survey-question-item">
+                <span>3. Any suggestions for improvement?</span>
+                <button class="btn-config-small" onclick="openSurveyModal(2)" disabled>Edit</button>
+            </div>
+        </div>
+
+        <button class="btn-add-question" onclick="addQuestion()" disabled>+ Add Question</button>
+    </div>
+
+    <div class="toggle-item">
+        <label>🔘 Enable Survey System</label>
+        <label class="switch">
+            <input type="checkbox" id="surveyEnabled" checked disabled>
+            <span class="slider"></span>
+        </label>
+    </div>
+</div>
 
     <div class="extras-section">
         <h3>Add-on Features</h3>
