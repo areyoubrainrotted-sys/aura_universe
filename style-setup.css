@@ -1068,3 +1068,35 @@ input:checked + .slider:before {
     justify-content: flex-end;
     gap: var(--space-md);
 }
+
+.locked-vip {
+    position: relative;
+    overflow: hidden;
+}
+
+.vip-hype-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(10, 10, 15, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: 2px dashed #00ff88;
+    border-radius: 12px;
+}
+
+.disabled-input {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* Ensure Modals actually show up */
+.config-modal.active {
+    display: flex !important;
+    opacity: 1;
+    visibility: visible;
+}
