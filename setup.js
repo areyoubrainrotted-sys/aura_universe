@@ -278,7 +278,7 @@ async function saveToSupabase(guildId) {
     loader.classList.add('active');
     loader.style.display = 'flex';
 
-    const selectedPlan = document.querySelector('input[name="plan"]:checked?').value || 'free';
+    const selectedPlan = document.querySelector('input[name="plan"]:checked')?.value || 'free';
     const selectedFeatures = Array.from(document.querySelectorAll('input[name="feature"]:checked')).map(cb => cb.value);
 
     const quests = {
