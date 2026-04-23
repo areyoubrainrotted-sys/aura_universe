@@ -275,48 +275,37 @@ function redirectToDiscordInvite() {
 // Save to Supabase (direct, no Flask needed)
 async function saveToSupabase(guildId) {
     const loader = document.getElementById('loadingOverlay');
-    if (loader) {
-        loader.classList.add('active');
-        loader.style.display = 'flex';
-    }
+    if (loader) { loader.style.display = 'flex'; loader.classList.add('active'); }
 
-    // Fix 1: Optional chaining on checked plan
+    // Plan selection fix
     const planEl = document.querySelector('input[name="plan"]:checked');
     const selectedPlan = planEl ? planEl.value : 'free';
     
     const selectedFeatures = Array.from(document.querySelectorAll('input[name="feature"]:checked')).map(cb => cb.value);
 
-    // Prepare data objects
-    const quests = {
-        quest1: document.getElementById('quest1')?.value || "",
-        quest2: document.getElementById('quest2')?.value || "",
-        quest3: document.getElementById('quest3')?.value || "",
-        quest_enabled: document.getElementById('questEnabled')?.checked ? 1 : 0
-    };
-    
-    const survey = {
-        enabled: document.getElementById('surveyEnabled')?.checked ? 1 : 0,
-        reward: parseInt(document.getElementById('surveyReward')?.value) || 250,
-        questions: surveyQuestions
-    };
-    
+    // Flattening the data to match your SQL columns
     const setupData = {
-        guild_id: guildId, // Make sure your DB column is BIGINT or TEXT
-        server_name: sessionStorage.getItem('setup_serverName') || "Unknown",
+        guild_id: String(guildId),
+        server_name: sessionStorage.getItem('setup_serverName') || "Unnamed Server",
         description: sessionStorage.getItem('setup_serverDesc') || "",
-        category: sessionStorage.getItem('setup_category') || "community",
+        category: sessionStorage.getItem('setup_category') || "Other",
         server_size: sessionStorage.getItem('setup_serverSize') || "medium",
+        size_goal: sessionStorage.getItem('setup_serverSize'), // Mapping to your size_goal column
         invite_code: sessionStorage.getItem('setup_inviteCode') || "",
         contact_email: sessionStorage.getItem('setup_email') || "",
         plan: selectedPlan,
-        features: selectedFeatures,
-        quests: quests,   // Ensure column is jsonb in Supabase
-        survey: survey,   // Ensure column is jsonb in Supabase
-        registered_at: new Date().toISOString(),
-        status: 'pending'
+        features: selectedFeatures, // This matches your json column
+        
+        // Quests (Matching your specific column names)
+        quest_feature_enabled: document.getElementById('questEnabled')?.checked ? 1 : 0,
+        
+        // Survey (Matching your specific column names)
+        survey_enabled: document.getElementById('surveyEnabled')?.checked ? 1 : 0,
+        survey_reward: parseInt(document.getElementById('surveyReward')?.value) || 250,
+        survey_questions: surveyQuestions, // This matches your json column
+        
+        status: 'active'
     };
-
-    console.log("Attempting to save data:", setupData);
 
     try {
         const response = await fetch(`${SUPABASE_URL}/rest/v1/aura_servers`, {
@@ -325,29 +314,24 @@ async function saveToSupabase(guildId) {
                 'Content-Type': 'application/json',
                 'apikey': SUPABASE_KEY,
                 'Authorization': `Bearer ${SUPABASE_KEY}`,
-                'Prefer': 'return=representation' // Useful for debugging
+                'Prefer': 'return=minimal' 
             },
             body: JSON.stringify(setupData)
         });
 
         if (response.ok) {
-            console.log("Success!");
-            sessionStorage.clear(); // Clean up all setup data
-            alert(`✅ Server registered successfully!\nServer ID: ${guildId}`);
+            sessionStorage.clear();
+            alert("🚀 Server Launched! Your bot is now active.");
             window.location.href = "index.html";
         } else {
-            const errorText = await response.text();
-            console.error("Supabase Error Response:", errorText);
-            alert("Database Error: " + errorText);
+            const err = await response.json();
+            console.error("Supabase Error:", err);
+            alert(`Error: ${err.message || 'Check console for details'}`);
         }
     } catch (error) {
-        console.error("Network/Fetch error:", error);
-        alert("Failed to connect to the database.");
+        console.error("Fetch Error:", error);
     } finally {
-        if (loader) {
-            loader.classList.remove('active');
-            loader.style.display = 'none';
-        }
+        if (loader) loader.style.display = 'none';
     }
 }
 
