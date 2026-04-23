@@ -275,16 +275,22 @@ function redirectToDiscordInvite() {
 // Save to Supabase (direct, no Flask needed)
 async function saveToSupabase(guildId) {
     const loader = document.getElementById('loadingOverlay');
-    loader.classList.add('active');
-    loader.style.display = 'flex';
+    if (loader) {
+        loader.classList.add('active');
+        loader.style.display = 'flex';
+    }
 
-    const selectedPlan = document.querySelector('input[name="plan"]:checked')?.value || 'free';
+    // Fix 1: Optional chaining on checked plan
+    const planEl = document.querySelector('input[name="plan"]:checked');
+    const selectedPlan = planEl ? planEl.value : 'free';
+    
     const selectedFeatures = Array.from(document.querySelectorAll('input[name="feature"]:checked')).map(cb => cb.value);
 
+    // Prepare data objects
     const quests = {
-        quest1: document.getElementById('quest1')?.value,
-        quest2: document.getElementById('quest2')?.value,
-        quest3: document.getElementById('quest3')?.value,
+        quest1: document.getElementById('quest1')?.value || "",
+        quest2: document.getElementById('quest2')?.value || "",
+        quest3: document.getElementById('quest3')?.value || "",
         quest_enabled: document.getElementById('questEnabled')?.checked ? 1 : 0
     };
     
@@ -295,54 +301,53 @@ async function saveToSupabase(guildId) {
     };
     
     const setupData = {
-        guild_id: guildId,
-        server_name: sessionStorage.getItem('setup_serverName'),
-        description: sessionStorage.getItem('setup_serverDesc'),
-        category: sessionStorage.getItem('setup_category'),
-        server_size: sessionStorage.getItem('setup_serverSize'),
-        invite_code: sessionStorage.getItem('setup_inviteCode'),
-        contact_email: sessionStorage.getItem('setup_email'),
+        guild_id: guildId, // Make sure your DB column is BIGINT or TEXT
+        server_name: sessionStorage.getItem('setup_serverName') || "Unknown",
+        description: sessionStorage.getItem('setup_serverDesc') || "",
+        category: sessionStorage.getItem('setup_category') || "community",
+        server_size: sessionStorage.getItem('setup_serverSize') || "medium",
+        invite_code: sessionStorage.getItem('setup_inviteCode') || "",
+        contact_email: sessionStorage.getItem('setup_email') || "",
         plan: selectedPlan,
-        features:selectedFeatures,
-        quests: quests,
-        survey: survey,
+        features: selectedFeatures,
+        quests: quests,   // Ensure column is jsonb in Supabase
+        survey: survey,   // Ensure column is jsonb in Supabase
         registered_at: new Date().toISOString(),
-        status: 'pending'  // Bot will update to 'active' once configured
+        status: 'pending'
     };
 
+    console.log("Attempting to save data:", setupData);
+
     try {
-        // Direct Supabase insert
         const response = await fetch(`${SUPABASE_URL}/rest/v1/aura_servers`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'apikey': SUPABASE_KEY,
-                'Authorization': `Bearer ${SUPABASE_KEY}`
+                'Authorization': `Bearer ${SUPABASE_KEY}`,
+                'Prefer': 'return=representation' // Useful for debugging
             },
             body: JSON.stringify(setupData)
         });
 
         if (response.ok) {
-            // Clear session storage
-            sessionStorage.removeItem('setup_serverName');
-            sessionStorage.removeItem('setup_serverDesc');
-            sessionStorage.removeItem('setup_category');
-            sessionStorage.removeItem('setup_serverSize');
-            sessionStorage.removeItem('setup_inviteCode');
-            sessionStorage.removeItem('setup_email');
-            
-            alert(`✅ Server registered! Bot will auto-configure your server shortly.\n\nServer ID: ${guildId}`);
+            console.log("Success!");
+            sessionStorage.clear(); // Clean up all setup data
+            alert(`✅ Server registered successfully!\nServer ID: ${guildId}`);
             window.location.href = "index.html";
         } else {
-            const error = await response.json();
-            alert("Error saving to database: " + JSON.stringify(error));
+            const errorText = await response.text();
+            console.error("Supabase Error Response:", errorText);
+            alert("Database Error: " + errorText);
         }
     } catch (error) {
-        console.error("Save error:", error);
-        alert("Failed to save. Please try again.");
+        console.error("Network/Fetch error:", error);
+        alert("Failed to connect to the database.");
     } finally {
-        loader.classList.remove('active');
-        loader.style.display = 'none';
+        if (loader) {
+            loader.classList.remove('active');
+            loader.style.display = 'none';
+        }
     }
 }
 
