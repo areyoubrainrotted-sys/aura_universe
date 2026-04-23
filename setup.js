@@ -306,7 +306,7 @@ async function saveToSupabase(guildId) {
         survey_questions: surveyQuestions, // JSON column
         survey_reward: parseInt(document.getElementById('surveyReward')?.value) || 250,
         
-        status: 'active'
+        status: 'pending'
     };
 
     console.log("Sending to Supabase:", setupData);
