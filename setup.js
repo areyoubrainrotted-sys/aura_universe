@@ -277,35 +277,39 @@ async function saveToSupabase(guildId) {
     const loader = document.getElementById('loadingOverlay');
     if (loader) { loader.style.display = 'flex'; loader.classList.add('active'); }
 
-    // Plan selection fix
+    // 1. Get Plan and Features
     const planEl = document.querySelector('input[name="plan"]:checked');
     const selectedPlan = planEl ? planEl.value : 'free';
-    
     const selectedFeatures = Array.from(document.querySelectorAll('input[name="feature"]:checked')).map(cb => cb.value);
 
-    // Flattening the data to match your SQL columns
+    // 2. Prepare the payload (Mapping JS to your SQL columns)
     const setupData = {
-        guild_id: String(guildId),
+        guild_id: String(guildId), // Text column
         server_name: sessionStorage.getItem('setup_serverName') || "Unnamed Server",
         description: sessionStorage.getItem('setup_serverDesc') || "",
-        category: sessionStorage.getItem('setup_category') || "Other",
+        category: sessionStorage.getItem('setup_category') || "Community",
+        size_goal: sessionStorage.getItem('setup_serverSize') || "medium",
         server_size: sessionStorage.getItem('setup_serverSize') || "medium",
-        size_goal: sessionStorage.getItem('setup_serverSize'), // Mapping to your size_goal column
         invite_code: sessionStorage.getItem('setup_inviteCode') || "",
         contact_email: sessionStorage.getItem('setup_email') || "",
         plan: selectedPlan,
-        features: selectedFeatures, // This matches your json column
+        features: selectedFeatures, // JSON column
         
-        // Quests (Matching your specific column names)
+        // Quest System Mapping
         quest_feature_enabled: document.getElementById('questEnabled')?.checked ? 1 : 0,
-        
-        // Survey (Matching your specific column names)
+        quest_1_text: document.getElementById('quest1')?.value || "",
+        quest_2_text: document.getElementById('quest2')?.value || "",
+        quest_3_text: document.getElementById('quest3')?.value || "",
+
+        // Survey System Mapping
         survey_enabled: document.getElementById('surveyEnabled')?.checked ? 1 : 0,
+        survey_questions: surveyQuestions, // JSON column
         survey_reward: parseInt(document.getElementById('surveyReward')?.value) || 250,
-        survey_questions: surveyQuestions, // This matches your json column
         
         status: 'active'
     };
+
+    console.log("Sending to Supabase:", setupData);
 
     try {
         const response = await fetch(`${SUPABASE_URL}/rest/v1/aura_servers`, {
@@ -321,17 +325,21 @@ async function saveToSupabase(guildId) {
 
         if (response.ok) {
             sessionStorage.clear();
-            alert("🚀 Server Launched! Your bot is now active.");
+            alert("🚀 Launch Successful! Your server is now registered.");
             window.location.href = "index.html";
         } else {
             const err = await response.json();
             console.error("Supabase Error:", err);
-            alert(`Error: ${err.message || 'Check console for details'}`);
+            alert(`Setup failed: ${err.message}\nCheck console for details.`);
         }
     } catch (error) {
-        console.error("Fetch Error:", error);
+        console.error("Network Error:", error);
+        alert("Could not connect to the database. Check your internet or Supabase URL.");
     } finally {
-        if (loader) loader.style.display = 'none';
+        if (loader) {
+            loader.style.display = 'none';
+            loader.classList.remove('active');
+        }
     }
 }
 
