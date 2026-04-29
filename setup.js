@@ -350,6 +350,12 @@ async function submitSetup() {
         alert("❌ You must agree to the terms before launching!");
         return;
     }
+    
+    const selectedFeatures = Array.from(document.querySelectorAll('input[name="feature"]:checked'))
+        .map(cb => cb.value);
+    sessionStorage.setItem('setup_features', JSON.stringify(selectedFeatures));
+    console.log("Saving features before redirect:", selectedFeatures);
+    
 
     // Save to sessionStorage
     sessionStorage.setItem('setup_serverName', document.getElementById('serverName').value);
