@@ -280,8 +280,9 @@ async function saveToSupabase(guildId) {
     // 1. Get Plan and Features
     const planEl = document.querySelector('input[name="plan"]:checked');
     const selectedPlan = planEl ? planEl.value : 'free';
-    const selectedFeatures = Array.from(document.querySelectorAll('input[name="feature"]:checked')).map(cb => cb.value);
-
+    const savedFeatures = sessionStorage.getItem('setup_features');
+    const selectedFeatures = savedFeatures ? JSON.parse(savedFeatures) : [];
+    console.log("Retrieved features from storage:", selectedFeatures);
     // 2. Prepare the payload (Mapping JS to your SQL columns)
     const setupData = {
         guild_id: String(guildId), // Text column
