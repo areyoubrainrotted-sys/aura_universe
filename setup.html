@@ -145,32 +145,41 @@
         </div>
     </div>
     <!-- Quest Configuration -->
-<div class="config-section">
+<!-- Quest Configuration (VIP LOCKED for now) -->
+<div class="config-section locked-vip">
+    <!-- VIP Hype Overlay for Quests -->
+    <div class="vip-hype-overlay">
+        <div class="badge">Coming Soon - VIP Release</div>
+        <p>🎯 **Custom Quests** are launching with our VIP update!</p>
+        <p class="vip-benefits">✨ Create custom welcome quests • Set unique rewards • Track completion stats</p>
+        <span class="notify-me" onclick="notifyMe()">📧 Notify Me When Available</span>
+    </div>
+
     <h3>🎯 Server Quests</h3>
-    <p class="config-desc">Customize the 3 beginner quests for new members</p>
+    <p class="config-desc">Quests feature is coming with the **VIP Launch**!</p>
 
     <div class="quest-item">
         <label>📝 Quest 1</label>
-        <input type="text" id="quest1" placeholder="e.g., Say hi in #general → +50 aura" value="Say hi in #general-chat → +50 aura" readonly>
-        <button class="btn-config" onclick="openQuestModal(1)">✏️ Edit</button>
+        <input type="text" id="quest1" placeholder="e.g., Say hi in #general → +50 aura" value="Say hi in #general-chat → +50 aura" readonly disabled>
+        <button class="btn-config" onclick="openQuestModal(1)" disabled>🔒 Coming soon</button>
     </div>
 
     <div class="quest-item">
         <label>⛏️ Quest 2</label>
-        <input type="text" id="quest2" placeholder="e.g., Mine, fish, or beachcomb 5 times → +200 aura" value="Mine, fish, or beachcomb 5 times → +200 aura" readonly>
-        <button class="btn-config" onclick="openQuestModal(2)">✏️ Edit</button>
+        <input type="text" id="quest2" placeholder="e.g., Mine, fish, or beachcomb 5 times → +200 aura" value="Mine, fish, or beachcomb 5 times → +200 aura" readonly disabled>
+        <button class="btn-config" onclick="openQuestModal(2)" disabled>🔒 Coming soon</button>
     </div>
 
     <div class="quest-item">
         <label>📋 Quest 3</label>
-        <input type="text" id="quest3" placeholder="e.g., Complete the server survey → +250 aura" value="Complete the server survey with `!survey` → +250 aura" readonly>
-        <button class="btn-config" onclick="openQuestModal(3)">✏️ Edit</button>
+        <input type="text" id="quest3" placeholder="e.g., Complete the server survey → +250 aura" value="Complete the server survey with `!survey` → +250 aura" readonly disabled>
+        <button class="btn-config" onclick="openQuestModal(3)" disabled>🔒 Coming soon</button>
     </div>
 
     <div class="toggle-item">
         <label>🔘 Enable Quest System</label>
         <label class="switch">
-            <input type="checkbox" id="questEnabled" checked>
+            <input type="checkbox" id="questEnabled" checked disabled>
             <span class="slider"></span>
         </label>
     </div>
